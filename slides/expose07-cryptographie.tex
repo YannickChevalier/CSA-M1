@@ -1,0 +1,705 @@
+\Titre{Cryptographie}
+
+
+
+  
+\usepackage{ifthen}
+
+
+\def\txthl#1{ \ifthenelse{\lengthtest{#1 pt<0.5pt}}{\top}{\bot} }
+
+\begin{document}
+
+\begin{reveals}
+		
+\maketitle
+
+
+\section{Survol des primitives cryptographiques}
+
+
+\begin{frame}
+  \frametitle{Cryptographie \textit{vs.} Contrôle d'accès}
+
+  \vfill
+
+  \begin{block}{Contrôle d'accès}
+    \begin{itemize}
+    \item une politique
+    \item un mécanisme d'application doit mettre en \oe uvre cette
+      politique
+    \item mécanisme applicable uniquement sur des composants qu'on
+      maîtrise
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Cryptographie}
+    \begin{itemize}
+    \item transformations de données
+    \item les propriétés obtenues sont indépendantes
+      de la localisation de ces données
+    \item permet la communication de données en dehors des composants maîtrisés
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Primitives Cryptographiques}
+
+  \vfill
+
+   \begin{block}{Primitives ?}
+     \begin{itemize}
+     \item type d'opérations sur les messages/textes
+     \item classement en fonction  de leur effet
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Grands types de primitives}
+    \begin{itemize}
+    \item fonctions de hachage (pour la sûreté et la sécurité)
+    \item chiffrement symétrique (2 personnes, 1 clef partagée pour le chiffrement et le déchiffrement)
+    \item chiffrement asymétrique (1 personne, 2 clefs, une pour le
+      chiffrement, une pour le déchiffrement)
+    \item signature digitale (1 personne, 2 clefs, une pour la
+      signature, une pour la validation des signatures)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Base de la Cryptographie}
+
+  \vfill
+
+   \begin{block}{Ingrédients essentiels}
+     \begin{itemize}
+     \item toutes les primitives robustes nécessitent un générateur
+       aléatoire
+     \item toutes les primitives robustes partent d'un problème à ``porte dérobée'':
+       \begin{itemize}
+       \item il est facile d'effectuer un calcul dans un sens
+       \item il est très difficile d'inverser ce calcul
+       \item sauf si on peut passer par une porte dérobée
+       \end{itemize}
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Évaluation}
+    Pour chaque primitive:
+    \begin{itemize}
+    \item certaines opérations faciles, généralement implémentées dans
+      des librairies
+    \item la robustesse est définie par un devinette qui conclut que sans
+      porte dérobée, il n'est pas possible de faire mieux que deviner
+      au hasard la réponse
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\section{Chiffrement asymétrique}
+
+
+\begin{frame}
+  \frametitle{Chiffrement asymétrique}
+
+  \vfill
+  
+  \begin{block}{Contexte}
+    \begin{itemize}
+    \item découverte au début des années 70
+    \item exemple connu historiquement: RSA
+    \item chaque personne dispose de deux clefs:
+      \begin{itemize}
+      \item une clef distribuée à tout le monde, qui sert à chiffrer des messages
+      \item une clef gardée secrète, qui permet de déchiffrer des messages
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  
+  \vfill
+
+  \begin{block}{Dans la vie de tous les jours}
+    laisser un message sur la messagerie d'une personne:
+    \begin{itemize}
+    \item avec un annuaire, tout le monde peut connaître le numéro de
+      téléphone de cette personne et laisser un message
+    \item seule la personne ayant le téléphone pourra connaître le
+      contenu des messages sur sa messagerie
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Cycle d'utilisation: Initialisation}
+
+  \vfill
+
+  \begin{block}{Procédure}
+    \begin{itemize}
+    \item un paramètre de difficulté (un nombre de bits)
+    \item une personne \(A\) crée un couple \((KA,KA^{-1})\) de clefs
+      à partir d'un générateur aléatoire
+    \item pour simplifier, \(KA\) est distribuée à tout le monde, et
+      \(KA^{-1}\) reste connue de \(A\) seul
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Risques}
+    \begin{itemize}
+    \item si le générateur aléatoire marche mal, une personne
+      extérieure peut tenter de deviner les clefs qui seront produites
+    \item réutilisation de paramètres d'une application à l'autre
+    \item réseaux: pour le Web, supporter de vieux navigateurs
+      signifie en général accepter des communications avec des
+      paramètres trop faibles
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Cycle d'utilisation: Utilisation}
+
+  \vfill
+
+  \begin{block}{Opérations faciles}
+    \begin{itemize}
+    \item en connaissant un message \(m\) et une clef publique \(k\),
+      il est \textbf{facile} d'obtenir \(c=encp(m,k)\), le chiffré de
+      \(m\) par \(k\)
+    \item en connaissant un message chiffré \(c=encp(m,k)\) et la clef
+      privée correspondante \(k^{-1}\), il est \textbf{facile} de déchiffrer
+      \(c\) pour calculer \(m\)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Modèle logique}
+    \[
+      \left\lbrace
+        \begin{array}{r@{\ensuremath{\rightarrow}}l}
+          m,k & encp(m,k) \\
+          encp(m,k),k^{-1} & m\\
+        \end{array}
+      \right.
+    \]
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cycle d'utilisation: robustesse}
+
+  \vfill
+
+   \begin{block}{Jeu de base}
+     \begin{enumerate}
+     \item le joueur choisit deux messages de même longueur \(m\) et \(m'\)
+     \item il reçoit en retour soit \(encp(m,k)\), soit \(encp(m',k)\)
+     \item le joueur doit deviner lequel des deux messages il a reçu
+     \end{enumerate}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Améliorations}
+    \begin{itemize}
+    \item à tout moment, le joueur peut demander à déchiffrer
+      n'importe quel message qu'il construit tant que ce n'est pas le
+      message qu'il a reçu à l'étape 2
+    \item la chiffrement est robuste si la probabilité qu'il a deviné
+      correctement est \(\frac 12\), quelque soit le message renvoyé
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exemple}
+
+  \vfill
+
+   \begin{block}{RSA}
+     \begin{enumerate}
+     \item publique: un module \(N\), un entier \(k\)
+     \item privé: un entier \(k^{-1}\) tel que:
+       \[
+         \forall 0\le m < N, \left(m^k\right)^{k^{-1}} = m \mod N
+       \]
+     \item chiffrement: \(encp(m,k)=m^k \mod N\)
+     \item déchiffrement \( c^{k^{-1}} \mod N\)
+     \end{enumerate}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Note}
+    \begin{itemize}
+    \item propriété importante: le déchiffrement ``réussit'' toujours,
+      mais si on utilise la mauvaise clef on obtient un message sans signification
+    \item pirmitive pas robuste (pourquoi ?)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+  
+  \begin{block}{Moralité}
+    \begin{itemize}
+    \item lorsqu'on chiffre deux fois un même message, on doit obtenir
+      deux résultats indépendants
+    \item on a aussi besoin d'aléatoire pour le chiffrement
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\section{Signature Digitale}
+
+
+
+
+\begin{frame}
+  \frametitle{Signature Digitale}
+
+  \vfill
+  
+  \begin{block}{Contexte}
+    \begin{itemize}
+    \item historiquement basée sur le chiffrement asymétrique 
+    \item exemple connu historiquement: DSA (signature RSA)
+    \item chaque personne dispose de deux clefs:
+      \begin{itemize}
+      \item une clef distribuée à tout le monde, qui sert à valider des signatures
+      \item une clef gardée secrète, qui permet de signer des messages
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  
+  \vfill
+
+  \begin{block}{Dans la vie de tous les jours}
+    affichage du numéro d'un correspondant:
+    \begin{itemize}
+    \item avec un annuaire/liste de contact, tout le monde peut
+      connaître la personne ayant le numéro appelant
+    \item seule la personne ayant le téléphone pourra appeler avec ce
+      numéro
+    \item ne pas montrer son numéro revient à ne pas signer son coup de fil
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Cycle d'utilisation: Initialisation}
+
+  \vfill
+
+  \begin{block}{Procédure (idem chiffrement}
+    \begin{itemize}
+    \item un paramètre de difficulté (un nombre de bits)
+    \item une personne \(A\) crée un couple \((KA,KA^{-1})\) de clefs
+      à partir d'un générateur aléatoire
+    \item pour simplifier, \(KA\) est distribuée à tout le monde, et
+      \(KA^{-1}\) reste connue de \(A\) seul
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Risques}
+    \begin{itemize}
+    \item idem chiffrement
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Cycle d'utilisation: Utilisation}
+
+  \vfill
+
+  \begin{block}{Opérations faciles}
+    \begin{itemize}
+    \item en connaissant un message \(m\) et la clef de signature
+      publique \(k^{-1}\), il est \textbf{facile} d'obtenir
+      \(c=sigp(m,k^{-1})\), la signature digitale de \(m\) par
+      \(k^{-1}\)
+    \item en connaissant un message signé \(s=sigp(m,k^{-1})\) et la
+      clef de validation correspondante \(k\), il est \textbf{facile} de
+      vérifier que \(s\) est la signature de \(m\)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Modèle logique}
+    \[
+      \left\lbrace
+        \begin{array}{r@{\ensuremath{\rightarrow}}l}
+          m,k^{-1} & sigp(m,k^{-1}) \\
+          m,sigp(m,k^{-1}),k & \top\\
+        \end{array}
+      \right.
+    \]
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cycle d'utilisation: robustesse}
+
+  \vfill
+
+   \begin{block}{Jeu de base}
+     \begin{enumerate}
+     \item le joueur demande la signature de messages de son choix
+     \item le joueur gagne s'il peut produire un couple \((m,\sigma)\)
+       où \(\sigma=sigp(m,k^{-1})\) 
+     \end{enumerate}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Améliorations}
+    \begin{itemize}
+    \item la signature est robuste si la probabilité de produire un
+      couple correct est négligeable (zéro)
+    \item (multiplication) utiliser la même mécanisme que pur RSA
+      n'est pas très robuste
+    \item on utilise en général une fonction de hachage pour rendre la
+      signature robuste
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+
+\end{frame}
+
+
+\section{Fonction de hachage}
+
+
+
+
+\begin{frame}
+  \frametitle{Fonction de hachage}
+
+  \vfill
+  
+  \begin{block}{Contexte}
+    \begin{itemize}
+    \item vient des codes correcteurs d'erreur
+    \item exemples connus: SHA1, MD5 
+      \begin{itemize}
+      \item une fonction qui calcule un message de taille fixée en
+        fonction d'un message de taille quelconque
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  
+  \vfill
+
+  \begin{block}{Dans la vie de tous les jours}
+    enregistrer ses contacts avec un surnom:
+    \begin{itemize}
+    \item peu de chances de connaître 2 personnes différentes ayant
+      les mêmes nom etprénoms
+    \item sans la liste de contacts, impossible de contacter une
+      personne à partir du surnom
+    \item si on choisit les surnoms au hasard, peu de chances que
+      quelqu'un d'autre puisse trouver un des surnoms utilisés
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Cycle d'utilisation: Utilisation}
+
+  \vfill
+
+  \begin{block}{Opérations faciles}
+    \begin{itemize}
+    \item en connaissant un message \(m\) et la fonction \(h(\cdot)\),
+      il est \textbf{facile} d'obtenir \(c=h(m)\), le haché de \(m\)
+    \item en connaissant un message haché \(b=h(m)\) et le message
+      original \(m\), il est \textbf{facile} de vérifier si \(b\) est
+      le haché de \(m\)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Modèle logique}
+    \[
+      \left\lbrace
+        \begin{array}{r@{\ensuremath{\rightarrow}}l}
+          m & h(m)\\
+        \end{array}
+      \right.
+    \]
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Cycle d'utilisation: robustesse}
+
+  \vfill
+
+   \begin{block}{Recherche d'antécédents}
+     du plus faible au plus dangereux
+       \begin{itemize}
+       \item il est possible de calculer \(x,y\) tels que \(h(x) = h(y)\)
+       \item connaissant \(x,h(x)\), il est possible de calculer \(y\) tel que
+         \(h(x) = h(y)\)
+       \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Notes}
+    \begin{itemize}
+    \item Pour les fonctions de hachage communément utilisées, pas de
+      critère basé sur des jeux
+    \item (taille des espaces entrée/sortie): il y a toujours une
+      infinité de collisions, mais selon la fonction il sera plus ou
+      moins dur d'en calculer
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Variante: HMAC}
+
+  \vfill
+
+  \begin{center}
+    HMAC = hash \(+\) nombre aléatoire partagé
+  \end{center}
+  \vfill
+
+  \begin{block}{HMAC et signature digitale}
+    \begin{itemize}
+    \item connaissant \(m\), la valeur \(h(m,r)\) peut être produite
+      par toute personne connaissant \(r\)
+    \item connaissant \(m,c\), toute personne connaissant \(r\) peut
+      vérifier que \(c=h(m,r)\)
+    \item signature light, symétrique, propre à un groupe de sujets
+    \item avantage: très rapide à calculer
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Signature digitale et h}
+    \begin{itemize}
+    \item RSA avec application de la clef privée sur le haché de \(m\)
+      est très sûr
+    \item en plus les temps de calcul sont plus courts
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+
+\end{frame}
+
+
+
+\section{Chiffrement symétrique}
+
+
+
+
+\begin{frame}
+  \frametitle{Chiffrement symétrique}
+
+  \vfill
+  
+  \begin{block}{Contexte}
+    \begin{itemize}
+    \item historiquement le seul chiffrement jusque dans les années 70
+    \item chiffrement de César, de Vigenère, Enigma,
+    \item notion de chiffrement parfait, mais pas de jeu difficile
+      pour les chiffrements en pratique
+    \end{itemize}
+  \end{block}
+  
+  \vfill
+
+  \begin{block}{Chiffrement parfait}
+    \begin{itemize}
+    \item Vernam: un générateur aléatoire parfait \(k\)
+    \item chiffrement: \(m \oplus k\) (ou exclusif bit à bit)
+    \item déchiffrement \((m \oplus k)\oplus k = m\) 
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Cycle d'utilisation: initialisation}
+
+  \vfill
+
+  \begin{block}{Entente}
+    \begin{itemize}
+    \item 2 personnes souhaitant communiquer s'entendent sur un nombre
+      aléatoire (contexte de sécurité ou clef secrète)
+    \item le contexte de sécurité est utilisé pour initialiser un
+      générateur de nombre aléatoires (puis ou exclusif avec les nombres générés)
+    \item la clef est utilisée pour chiffrer bloc par bloc un message
+      avec chaînage entre les différents blocs
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Cycle d'utilisation: Utilisation}
+
+  \vfill
+
+  \begin{block}{Opérations faciles}
+    \begin{itemize}
+    \item en connaissant un message \(m\) et la clef \(k\), il est
+      \textbf{facile} d'obtenir \(c=encs(m,k)\), le chiffré de \(m\)
+    \item en connaissant un message chiffré \(c=encs(m,k)\) et la clef
+      \(k\), il est \textbf{facile} de calculer \(m\)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Modèle logique}
+    \[
+      \left\lbrace
+        \begin{array}{r@{\ensuremath{\rightarrow}}l}
+          m,k & encs(m,k)\\
+          encs(m,k),k & m\\
+        \end{array}
+      \right.
+    \]
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Cycle d'utilisation: robustesse}
+
+  \vfill
+
+  \begin{block}{Jeux cryptographiques}
+     \begin{itemize}
+     \item des jeux peuvent être définis comme pour le chiffrement asymétrique
+     \item mais les chiffrements utilisés en pratique ne sont pas montrés sûrs
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Notes}
+    \begin{itemize}
+    \item le chiffrement par blocs est déterministe (ex: AES), donc
+      moins sécurisé
+    \item pour le rendre moins déterministe, on utilise en plus le bloc
+      chiffré précédent pour calculer le chiffré du bloc courant
+    \item vecteur d'initialisation: valeur utilisée pour chiffré le premier bloc
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+
+
+
+
+
+\end{reveals}
+\end{document}
+ 

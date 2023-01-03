@@ -1,0 +1,471 @@
+\Titre{Modèles pour le Contrôle d'accès}
+
+
+
+  
+\usepackage{ifthen}
+
+
+\def\txthl#1{ \ifthenelse{\lengthtest{#1 pt<0.5pt}}{\top}{\bot} }
+
+\begin{document}
+
+\begin{reveals}
+		
+\maketitle
+
+
+\begin{frame}
+  \frametitle{Présentation}
+
+  \vfill
+
+  \begin{block}{Nomenclature}
+    Vocabulaire pour parler plus préciséments de systèmes de contrôle d'accès
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Différents types de contrôle d'accès}
+    \begin{enumerate}
+    \item Matrice de contrôle d'accès (modèle HRU)
+    \item Listes de contrôle d'accès (ACL)
+    \item RBAC
+    \end{enumerate}
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+\section{Concepts}
+
+\begin{frame}
+  \frametitle{Domaine}
+
+  \vfill
+
+   \begin{block}{Objet}
+     \begin{itemize}
+     \item élément du SI contenant ou recevant de l'information
+     \item exemples: enregistrement et champ (BD), blocs, pages,
+       segments (mémoire), fichiers, répertoires (système de fichier),
+       programmes, périphériques (vidéo, son, réseau)
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+   \begin{block}{Sujet}
+     \begin{itemize}
+     \item entité causant un flux d'information entre objets
+     \item exemples: \emph{processus}, personne, périphérique
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+   \begin{block}{Opération}
+     \begin{itemize}
+     \item séquence d'instructions demandée par un sujet
+     \item exemples: lecture, écriture, exécution, opérations ReST,
+       création d'une table ou d'une base de données
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Permission}
+
+  \vfill
+
+   \begin{block}{Définition}
+     Une \emph{permission} est une autorisation d'effectuer une
+     opération qui affecte un objet.
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Note}
+    \begin{itemize}
+    \item un clerc de banque n'a pas la permission de faire des
+      retraits ou des ajouts (opérations)
+    \item par contre, pour chaque compte de ses clients, il a la
+      permission de faire ces opérations
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Matrice de contrôle d'accès}
+
+  \vfill
+
+   \begin{block}{modèle HRU [76]}
+     Matrice dans laquelle:
+     \begin{itemize}
+     \item chaque ligne représente un sujet
+     \item chaque colonne représente un objet
+     \item chaque case contient l'ensemble des opérations sur l'objet
+       qui sont autorisées pour le sujet
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{center}
+    \textcolor{blue}{Exemple:}~~~\begin{tabular}[c]{|l|c|c|c|}
+      \rowcolor{white}
+      \hline &\(o_1\)&\(o_2\)&\(o_3\) \\\hline
+        \rowcolor{white}
+    alice & r,w & r & r,x \\\hline
+      \rowcolor{white}
+      bob & r & r &  \\\hline
+    \end{tabular}
+  \end{center}
+
+
+  \vfill
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Listes de contrôle d'accès (ACL)}
+
+  \vfill
+
+   \begin{block}{Définition}
+     \begin{itemize}
+     \item liste associée à un objet qui spécifie tous les sujets
+       pouvant accéder à l'objet ainsi que leurs droits
+     \item Une telle liste est attachée à un objet, et ses éléments sont des couples
+       \((\text{sujet},\{\text{ens. de permissions}\})\)
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{center}
+    \textcolor{blue}{Exemple:}~~~\begin{tabular}[c]{|l|c|c|c|}
+      \rowcolor{white}
+      \hline &\only<2>{\cellcolor{red}}\(o_1\)&\only<3>{\cellcolor{red}}\(o_2\)&\only<4>{\cellcolor{red}}\(o_3\) \\\hline
+        \rowcolor{white}
+    alice &\only<2>{\cellcolor{red}} r,w & \only<3>{\cellcolor{red}}r & \only<4>{\cellcolor{red}}r,x \\\hline
+      \rowcolor{white}
+      bob &\only<2>{\cellcolor{red}} r & \only<3>{\cellcolor{red}}r & \only<4>{\cellcolor{red}} \\\hline
+    \end{tabular}
+  \end{center}
+  \pause
+  \only<2-4>{ACL de }\only<2>{\(o_1\): [(alice,\{r,w\}),(bob,\{r\})]}\pause
+  \only<3>{\(o_2\): [(alice,\{r\}),(bob,\{r\})]}\pause
+  \only<4>{\(o_3\): [(alice,\{r,x\}),(bob,\(\emptyset\))]}
+  \vfill
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{ACL sous linux}
+
+  \vfill
+
+  \begin{block}{Syntaxe}
+    \begin{lstlisting}[language=bash]
+      setfacl mode <-d> type:nom:perm
+    \end{lstlisting}
+      \begin{itemize}
+      \item mode: -m (modifier) ou -x (supprimer)
+      \item -d: pour les répertoires uniquement, indique les ACL des fichiers qui seront créés
+      \item type: u our user, g pour groupe
+      \item nom: nom de l'utilisateur ou du groupe
+      \item perm: rwx
+      \end{itemize}
+  \end{block}
+  
+  \vfill
+
+   
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Capacités}
+  \def\firstrowcolor{\rowcolor{white}}
+  \def\secondrowcolor{\rowcolor{white}}
+  \only<2>{\def\firstrowcolor{\rowcolor{red}}}
+  \only<3>{\def\secondrowcolor{\rowcolor{red}}}
+
+  \vfill
+  \begin{block}{Définition}
+    les \emph{capacités} d'un utilisateur sont toutes les permissions de cet utilisateur
+  \end{block}
+
+  \vfill
+  \begin{block}{Exemples}
+    \begin{itemize}
+    \item historiquement trop lourd à implémenter dans des systèmes
+      d'exploitation pour des utilisations réelles
+    \item Sous Linux, chaque \emph{capabilities} est un ensembles de capacités
+    \item Permissions sous Android (les applications sont des sujet)
+    \item Fuchsia (OS Google, en cours de développement) semble utiliser les capacités
+    \end{itemize}
+  \end{block}
+
+  \vfill   
+
+  \begin{center}
+    \textcolor{blue}{Exemple:}~~~\begin{tabular}[c]{|l|c|c|c|}
+      \hline\rowcolor{white}  &\(o_1\)&\(o_2\)&\(o_3\) \\
+       \hline
+       \firstrowcolor alice & r,w & r & r,x \\
+        \hline
+        \secondrowcolor bob & r & r &  \\
+         \hline
+    \end{tabular}
+  \end{center}
+\pause
+  \uncover<2-3>{Capacités de }
+  \only<2>{alice: [(\(o_1\),\{r,w\}),(\(o_2\),\{r\}),(\(o_3\),\{r,x\})]}\pause
+  \only<3>{bob: [(\(o_1\),\{r\}),(\(o_2\),\{r\}),(\(o_3\),\(\emptyset\))]}
+
+  \vfill
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Domaines et types}
+
+  \vfill
+
+  \begin{block}{Domaine}
+    regroupement de sujets (dans un groupe ou un rôle)
+  \end{block}
+  
+  \vfill
+
+  \begin{block}{Type}
+    regroupement d'objets
+  \end{block}
+  
+  \vfill
+  \begin{block}{Utilité}
+    \begin{itemize}
+    \item on peut utiliser des domaines et/ou des types pour obtenir
+      une politique de contrôle d'accès plus simple
+    \item exemple: domaine \(\Rightarrow\) rôle dans une application Web,
+      type \(\Rightarrow\) classe d'un modèle
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+
+\end{frame}
+
+
+
+\section{Modalités du contrôle d'accès}
+
+\begin{frame}
+  \frametitle{Contrôle d'accès discrétionnaire}
+
+  \vfill
+
+   \begin{block}{Contrôle d'accès discrétionnaire (DAC---ACL, capacités)}
+     Chaque objet est la propriété d'un sujet qui définit les droits
+     d'accès sur cet objet
+   \end{block}
+
+  \vfill
+
+   \begin{block}{Contrôle d'accès mandataire (MAC---Bell-LaPadula, Biba)}
+     Tous les objets sont la propriété virtuelle d'un sujet hors du
+     système qui délègue les permissions aux différents sujets
+   \end{block}
+
+  \vfill
+
+   \begin{block}{Contrôle d'accès non-discrétionnaire (nouveau)}
+     Le système est en principe discrétionnaire, mais des règles
+     limitent les possibilités des utilisateurs:
+     \begin{enumerate}
+     \item en fonction de leurs actions passées (History-BAC)
+     \item en fonction de règles de séparation de tâche (SoD-BAC)
+     \item en fonction de rôles (Role-BAC, RBAC)
+     \end{enumerate}
+     En général, on adopte en fonction du contexte un mélange de ces
+     différents types de politiques.
+   \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+ 
+
+\begin{frame}
+  \frametitle{Évaluation DAC}
+
+  \vfill
+
+   \begin{block}{Limites des ACL}
+     \begin{itemize}
+     \item il est facile de savoir qui a accès à une ressource donnée
+     \item il est très difficile, voire impossible, de connaître les permissions d'un sujet
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+   \begin{block}{Limites des capacités}
+     \begin{itemize}
+     \item il est facile de savoir les ressources auxquelles un sujet a accès
+     \item il est très difficile, voire impossible, de connaître les permissions associées à un objet
+     \end{itemize}
+  \end{block}
+
+  \vfill
+  \begin{block}{Suite}
+    Exploration de systèmes non-mandataires plus adaptés pour la
+    sécurisation de grands systèmes d'information
+  \end{block}
+
+  \vfill
+\end{frame}
+
+
+\section{RBAC}
+
+\begin{frame}
+  \frametitle{RBAC}
+
+  \vfill
+
+  \begin{block}{Types de RBAC}
+    \begin{itemize}
+    \item Core: rôle \(=\) groupe
+    \item Hiérarchique: introduction d'une hiérarchie de rôle (et d'héritage des permissions)
+    \item Contraint: introduction de contraintes de séparation de
+      tâche (un sujet ne peut pas jouer dans 2 équipes pendant un même match)
+    \item On ne s'intéresse qu'aux deux premiers cas
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Core RBAC}
+
+  \vfill
+
+   \begin{block}{Principe}
+     \begin{itemize}
+     \item Classification des sujets: dès qu'il est authentifié, un
+       sujet acquiert plusieurs rôles (relation \texttt{Role} entre
+       sujets et rôles)
+     \item Politique de contrôle d'accès: une relation \texttt{Perm}
+       relie les rôles, les actions, et les objets
+     \item Application: un sujet \(s\) a la permission de faire
+       l'opération \(a\) sur l'objet \(o\) si \(s\) a un rôle \(r\)
+       tel que \(\text{\tt Perm}(r,a,o)\) est vrai
+     \end{itemize}
+  \end{block}
+
+  \vfill
+  
+  \begin{block}{Formalisation logique}
+    \[
+      \text{\tt Autorise}(s,a,o) \leftarrow \text{\tt Role}(s,r),\text{\tt Perm}(r,a,o)
+    \]
+  \end{block}
+
+  \vfill
+\end{frame}
+
+\begin{frame}
+  \frametitle{RBAC hiérarchique}
+  \framesubtitle{En plus de Core}
+
+  \vfill
+
+   \begin{block}{Principe}
+     \begin{itemize}
+     \item héritage: si \(r \le r'\) alors \(r'\) peut faire tout ce que peut faire \(r\)
+     \item On peut de passer de la relation \texttt{Role} en disant
+       que tout sujet \(s\) a un rôle \(s\) (c'est le cas pour les bases de données)
+     \item Politique de contrôle d'accès: une relation \texttt{Perm}
+       relie les rôles, les actions, et les objets
+     \item Application: un sujet \(s\) a la permission de faire
+       l'opération \(a\) sur l'objet \(o\) si \(s\) a un rôle \(r\)
+       \textbf{et qu'il existe un rôle \(r'\le r\)} tel que
+       \(\text{\tt Perm}(r',a,o)\) est vrai
+     \end{itemize}
+  \end{block}
+  
+  \vfill
+  
+  \begin{block}{Formalisation logique}
+    \[
+      \text{\tt Autorise}(s,a,o) \leftarrow \text{\tt Role}(s,r),\text{\tt Perm}(r',a,o),r'\le r
+    \]
+  \end{block}
+
+  \vfill
+\end{frame}
+
+\begin{frame}
+  \frametitle{Limitations de RBAC}
+
+  \vfill
+
+   \begin{block}{Ingénierie des rôles}
+     \begin{itemize}
+     \item l'écriture de politiques RBAC (hiérarchiques) suppose une
+       certaine uniformité
+     \item i.e., le passage par la relation \texttt{Role} doit réduire le nombre de
+       permissions \texttt{Perm} à gérer
+     \item ingénierie des rôles: trouver les rôles qui permettent la
+       meilleure réduction possible
+     \end{itemize}
+  \end{block}
+
+  \vfill
+  \begin{block}{Politique des moindres privilèges}
+    \begin{itemize}
+    \item but de la mise en place d'un système de contrôle accès: que
+      chaque sujet ne puisse faire que ce dont il a besoin
+    \item tentation (compréhensible) de simplifier le contrôle d'accès
+      en ayant des rôles plus larges que nécessaire pour regrouper
+      (uniformiser) différents cas
+    \item d'où un conflit avec l'ingénierie des rôles
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+
+
+
+
+\end{reveals}
+\end{document}
+ 
+

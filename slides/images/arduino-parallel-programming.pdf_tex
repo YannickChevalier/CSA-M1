@@ -1,0 +1,108 @@
+%% Creator: Inkscape 1.0.2 (e86c870879, 2021-01-15), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'images/arduino-parallel-programming.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{212.17410577bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.71260802)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{images/arduino-parallel-programming.pdf}}%
+    \put(0.47806492,0.6306601){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}13\end{tabular}}}}}%
+    \put(0.51200275,0.6306601){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}12\end{tabular}}}}}%
+    \put(0.54593337,0.6306601){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}11\end{tabular}}}}}%
+    \put(0.57986399,0.6306601){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}10\end{tabular}}}}}%
+    \put(0.61380375,0.64341863){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}9\end{tabular}}}}}%
+    \put(0.64773465,0.64341863){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}8\end{tabular}}}}}%
+    \put(0.70202761,0.64341863){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}7\end{tabular}}}}}%
+    \put(0.73596736,0.64341863){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}6\end{tabular}}}}}%
+    \put(0.76989798,0.64341863){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}5\end{tabular}}}}}%
+    \put(0.80382889,0.64341863){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}4\end{tabular}}}}}%
+    \put(0.83776864,0.64341863){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3\end{tabular}}}}}%
+    \put(0.87169955,0.64341863){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2\end{tabular}}}}}%
+    \put(0.41548505,0.54201325){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}L\end{tabular}}}}%
+    \put(0.59935175,0.05750182){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}5V\end{tabular}}}}}%
+    \put(0.76834247,0.05750182){\color[rgb]{1,1,1}\rotatebox{90.0000025}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}A0\end{tabular}}}}}%
+    \put(0.82703548,0.09608131){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}ANALOG IN\end{tabular}}}}%
+    \put(0.40889656,0.60492224){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}AREF\end{tabular}}}}}%
+    \put(0.89989526,0.40812229){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0.44437826,0.61758876){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}GND\end{tabular}}}}}%
+    \put(0.3976728,0.48017207){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}TX\end{tabular}}}}%
+    \put(0.3980319,0.4479352){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}RX\end{tabular}}}}%
+    \put(0.52831441,0.05937061){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}RESET\end{tabular}}}}}%
+    \put(0.56564209,0.05767698){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3V3\end{tabular}}}}}%
+    \put(0.80227327,0.05750182){\color[rgb]{1,1,1}\rotatebox{90.0000025}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}A1\end{tabular}}}}}%
+    \put(0.83622256,0.05750182){\color[rgb]{1,1,1}\rotatebox{90.0000025}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}A2\end{tabular}}}}}%
+    \put(0.87014404,0.05750182){\color[rgb]{1,1,1}\rotatebox{90.0000025}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}A3\end{tabular}}}}}%
+    \put(0.9040838,0.05750182){\color[rgb]{1,1,1}\rotatebox{90.0000025}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}A4\end{tabular}}}}}%
+    \put(0.9380147,0.05750182){\color[rgb]{1,1,1}\rotatebox{90.0000025}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}A5\end{tabular}}}}}%
+    \put(0.70116257,0.05750182){\color[rgb]{1,1,1}\rotatebox{90.0000025}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}VIN\end{tabular}}}}}%
+    \put(0.63327352,0.05750182){\color[rgb]{1,1,1}\rotatebox{90.0000025}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}GND\end{tabular}}}}}%
+    \put(0.66624691,0.05767682){\color[rgb]{1,1,1}\rotatebox{90.0000025}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}GND\end{tabular}}}}}%
+    \put(0.68321222,0.58405386){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}DIGITAL (PWM=\end{tabular}}}}%
+    \put(0.85698975,0.58405386){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l})\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{images/arduino-parallel-programming.pdf}}%
+    \put(0.51287732,0.45254241){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Arduino\end{tabular}}}}%
+    \put(0.65418313,0.46949862){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}TM\end{tabular}}}}%
+    \put(0.49947219,0.05937061){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}IOREF\end{tabular}}}}}%
+    \put(0.91233202,0.32087448){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}ICSP\end{tabular}}}}}%
+    \put(0.27889736,0.56149159){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}ICSP2\end{tabular}}}}%
+    \put(0.89820155,0.48015369){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}ON\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{images/arduino-parallel-programming.pdf}}%
+    \put(0.64927207,0.09608131){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}POWER\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{images/arduino-parallel-programming.pdf}}%
+    \put(0.94040791,0.64341878){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0\end{tabular}}}}}%
+    \put(0.9064773,0.64341878){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}}%
+    \put(0.9064773,0.58329901){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}TX0\end{tabular}}}}}%
+    \put(0.94040791,0.58329901){\color[rgb]{1,1,1}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}RX0\end{tabular}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{images/arduino-parallel-programming.pdf}}%
+    \put(0.12853053,0.60231731){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}RESET\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{images/arduino-parallel-programming.pdf}}%
+  \end{picture}%
+\endgroup%

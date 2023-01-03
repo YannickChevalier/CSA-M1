@@ -1,0 +1,566 @@
+\Titre{Inventaire des composants}
+
+
+
+  
+\usepackage{ifthen}
+
+
+
+\begin{document}
+
+\begin{reveals}
+		
+  \maketitle
+
+
+  \begin{frame}
+    \frametitle{Retour sur les composants}
+
+  \vfill
+  \begin{block}{Composants concrets}
+    \begin{itemize}
+    \item l'environnement physique (sites, batiments, salles, badges,\(\ldots\))
+    \item l'environnement SI déployés (serveurs, clients, routeurs, \(\ldots\)
+    \item l'environnement SI réel (téléphones portables, tablettes, portables,\(\ldots\))
+    \item les personnes recensées et les visiteurs
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\begin{block}{Ce cours}
+  \begin{itemize}
+  \item recensement systématique des composants
+  \item avec un focus sur la sécurité dans les différents cas
+  \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Identification des composants}
+
+  \vfill
+
+   \begin{block}{Actifs primordiaux}
+     \begin{itemize}
+     \item données
+     \item processus métiers (services propres à l'entreprise)
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+\begin{block}{Éléments supports}
+  \begin{itemize}
+  \item applications (mail, serveur SMB/NFS)
+  \item système(s) d'exploitation
+  \end{itemize}
+  \end{block}
+
+  \vfill
+
+\begin{block}{Équipements}
+  \begin{itemize}
+  \item biens propres: commutateur, routeur, serveurs, ordinateurs de l'entreprise
+  \item biens des usagers: tablettes, smartphones
+  \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Inventaire des données}
+
+  \vfill
+
+   \begin{block}{Identification des données sensibles}
+     \begin{itemize}
+     \item pour la sécurité: mots de passe, badge, \(\ldots\)
+     \item pour l'entreprise: plans marketing, stratégie industrielle,
+       fichiers clients, contrats, \(\ldots\)
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+\begin{block}{Processus métiers}
+  \begin{itemize}
+  \item il est important que certaines procédures restent secrètes
+  \item dans l'informatique, l'architecture d'une application peut
+    être le c\oe ur d'une entreprise
+  \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Inventaire des biens}
+
+  \vfill
+
+   \begin{block}{Quelques outils}
+     \begin{itemize}
+     \item Identification des ordinateurs connectés au réseau:
+       ServiceNow, HP OpenView, arp-scan, nmap
+     \item Liste des programmes sur les ordinateurs: AIDA64 (Windows,
+       MacOS, iOS, Android), dpkg, find (Ubuntu, Linux)
+     \end{itemize}
+  \end{block}
+
+  \vfill
+\begin{block}{Problème pratique}
+  \begin{itemize}
+  \item idéal: l'administrateur décide des machines et logiciels installés sur le réseau
+  \item pratique: les utilisateurs installent des logiciels 
+  \item résolution: focus sur les parties maîtrisées, et séparation dans le réseau
+    basée sur les parties non-maîtrisées
+  \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+\section{Inventaire et sécurisation du réseau}
+
+
+\begin{frame}
+  \frametitle{Maîtrise du Réseau}
+
+  \vfill
+
+   \begin{block}{Zones indépendantes}
+     \begin{itemize}
+     \item zone: partie du réseau sécurisée par un pare-feu (entrant et sortant)
+     \item séparation suivant des considérations diverses:
+       \begin{itemize}
+       \item menace: public, visiteurs physiques, type d'emploi
+       \item biens à protéger: réseau par projet ou type de données
+         (comptes de l'entreprise \textit{vs} recherche)
+       \item importance du bien: \textbf{administration système et
+           sécurité seulement à partir de certains ordinateurs}
+       \end{itemize}
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Authentification diverse}
+    \begin{itemize}
+    \item méthode(s) d'authentification varient suivant la zone
+    \item authentification à distance (Radius, Kerberos) par des
+      serveurs protégés
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{BYOD}
+  \framesubtitle{Bring Your Own Device}
+
+  \vfill
+
+   \begin{block}{Définition}
+     \begin{itemize}
+     \item le fait, par les utilisateurs, d'apporter leurs ordinateurs
+       au bureau
+     \item pratique interdite il y a quelques années pour raisons de sécurité
+     \item smartphone, tablettes, etc: il faut s'en accomoder
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+\begin{block}{En pratique}
+  \begin{itemize}
+  \item standard: séparation dans une zone spécifique (e.g., eduroam)
+  \item sécurité haute: besoin d'authentification cryptographique du
+    matériel connecté dans les zones sécurisées (MAC insuffisant)
+  \item vérification des logiciels installés possible mais lourde
+    (droits administrateurs sur machines privée)
+  \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Contrôle des échanges entre zones}
+
+  \vfill
+  \begin{block}{White/Black listing}
+    \begin{itemize}
+    \item white listing: n'autoriser que les (flux d'information) recensés et autorisés
+    \item black listing: n'interdire que les (flux d'information) recensés et interdits
+    \item white listing plus exigeant, mais apporte un meilleur niveau de sécurité
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+   \begin{block}{Inventaire des flux}
+     \begin{itemize}
+     \item lister les connexions utilisées entre les différents zones
+       (nmap, inventaire des processus métier, sondages des personnes)
+     \item pare-feux rejetant tous les flux sauf ceux autorisés
+     \end{itemize}
+  \end{block}
+
+  \vfill
+\begin{block}{Contournement}
+  \begin{itemize}
+  \item un des motifs d'introduction des applications Web: passer par
+    le port 80/443 qui est en général ouvert
+  \item déplacement d'un ordinateur d'une zone vers une autre
+  \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cas particulier: Internet}
+
+  \vfill
+
+   \begin{block}{Zone démilitarisée (DMZ}
+     \begin{itemize}
+     \item intégrité moyenne, confidentialité basse
+     \item zone à l'intérieur de laquelle on contrôle tous les accès
+     \item filtrage des paquets provenant d'Internet plus contrôlé
+     \item limite sévère des connexions entrantes: quelques ports utilisés
+     \item mise place de \textbf{systèmes de détection d'intrusion}
+       (IDS) et de \textbf{systèmes de protection contre les
+         intrusions} (IPS)
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Contrôle des flux venant du SI}
+    \begin{itemize}
+    \item nécessaire de limiter les fuites d'information (fichier mis en téléchargement)
+    \item nécessaire de protéger aussi l'intégrité de la DMZ (mise en
+      ligne de programmes pouvant servir de relais vers d'autres
+      parties du SI)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Accès à distance}
+
+  \vfill
+
+   \begin{block}{Cas d'utilisation}
+     \begin{itemize}
+     \item remontées en temps-réel du terrain
+     \item télétravail
+     \item administration à distance
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+\begin{block}{Recommandations}
+  \begin{itemize}
+  \item serveurs d'authentification (Kerberos, Radius)
+  \item concentrateur VPN (remplacement IP par IPSec),ssh (au-dessus de TCP)
+  \item serveur application dédié (Remote Access Server) au transfert authentifié des données
+  \item dans tous les cas, le matériel utilisé par le client
+    \textbf{doit} être fourni et géré par l'entreprise (pas de BYOD)
+  \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Mail}
+
+  \vfill
+
+   \begin{block}{POP, SMTP, IMAP}
+     \begin{itemize}
+     \item pop, imap: protocole de synchronisation de boîtes mail
+     \item pop marche par copies locales, imap par accès à distance à
+       une unique boîte mail
+     \item smtp: protocole d'envoi de mails
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+\begin{block}{Authentification (POP,IMAP)}
+  \begin{itemize}
+  \item ssh + mot de passe pour l'authentification du client (et accès à distance)
+  \item BYOD: les mots de passe des utilisateurs se retrouvent un peu
+    partout (Google, Outlook, mais aussi des applications ``sympas'')
+  \end{itemize}
+  \end{block}
+
+  \vfill
+\begin{block}{Authentification par externe (SMTP)}
+  \begin{itemize}
+  \item pour l'utilisation d'un mot de passe, il faut accepter un
+    niveau de protection plus faible par Google (car ils n'ont pas
+    confiance en votre entreprise)
+  \item alternative: enregistrer une clef publique d'authentification
+    auprès de Google
+  \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+
+
+\end{frame}
+
+
+
+\section{Sécurisation des postes}
+
+\begin{frame}
+  \frametitle{Limite (BYOD)}
+
+  \vfill
+
+  \begin{block}{Exclusion du BYOD}
+    \begin{itemize}
+    \item impossible en pratique d'empêcher les utilisateurs d'amener
+      leur téléphone portable
+    \item il convient de fournir un réseau Wifi bien séparé du reste
+      du réseau de l'entreprise (impression, partage de documents)
+    \item mais le mail permet souvent un échange de documents
+      incontrôlé (hors log)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\begin{block}{Suite:}
+  \begin{itemize}
+  \item focus sur les postes gérés par l'administrateur système
+  \item recensement de bonnes pratiques
+  \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Déploiement de nouveaux logiciels}
+
+  \vfill
+
+   \begin{block}{Par les utilisateurs lambda}
+     \begin{itemize}
+     \item installer un logiciel, c'est donner les pleins pouvoirs
+       (exception: android) à l'auteur sur son ordinateur
+     \item extrèmement important de vérifier l'auteur (automatique
+       sous Windows et apt/rpm) du logiciel
+     \item il faut faire confiance aux procédures des fournisseurs
+       (signature MS, Google Play, iTunes) pour vérifier que les
+       logiciels distribués ne contiennent pas de virus
+     \item note: faire un scan de son ordinateur à partir d'une page
+       web fait courir les mêmes risques
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{center}
+    \textcolor{red}{Distribuer des logiciels gratuitement est une des
+      principales méthodes pour infecter des ordinateurs}
+  \end{center}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Anti-Virus}
+
+  \vfill
+
+   \begin{block}{Fonctionnement}
+     \begin{itemize}
+     \item lit un exécutable pour retrouver des schémas d'appels de
+       fonction ou de boucles, tests utilisés par des virus connus
+     \item base virale: liste des virus à tester, toujours incomplète:
+       \begin{itemize}
+       \item des virus sont enlevés lorsqu'ils ne sont plus utilisés
+       \item des virus pas encore découverts ne sont pas testés
+       \end{itemize}
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Virus modernes}
+    \begin{itemize}
+    \item lors de la compilation, plein de variantes trompant les
+      algorithmes de détection
+    \item les anti-virus risquent de devenir complètement inefficaces
+    \item il leur est aussi possible de passer à travers beaucoup de pare-feux
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Mises à Jour}
+
+  \vfill
+
+   \begin{block}{Failles 0-day}
+     \begin{itemize}
+     \item failles qui sont exploitées avant d'être découvertes officiellement
+     \item Computer Emergency Response Teams: dès qu'une telle faille
+       est découverte, patch fourni le plus vite possible (avec
+       explication sommaire du problème)
+     \end{itemize}
+  \end{block}
+
+  \vfill
+  \begin{block}{Conséquence}
+    \begin{itemize}
+    \item dès qu'un patch est disponible, toutes les menaces possibles
+      sont au courant de la vulnérabilité
+    \item si cette vulnérabilité affecte une partie du SI, il faut
+      donc faire le plus rapidement possible une mise à jour pour la
+      supprimer
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+\begin{frame}
+  \frametitle{Mises à jour automatiques}
+
+  \vfill
+
+   \begin{block}{Avantages}
+     \begin{itemize}
+     \item permet d'assurer que les mises à jour les plus récentes
+       sont installées dès que possible
+     \item simplifie l'administration
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Inconvénients}
+    \begin{itemize}
+    \item le fonctionnement du SI est de la responsabilité de
+      l'administrateur
+    \item plus sûr pour le fonctionnement: MàJ sur machine test,
+      vérification des fonctionnalités, sauvegarde de chaque machine
+      en production avant MàJ
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Mises à jour en pratique}
+
+  \vfill
+
+   \begin{block}{Patch Tuesday (en cours d'abandon ?)}
+     \begin{itemize}
+     \item politique de Microsoft: déployer les patchs de sécurité à
+       travers Windows Server Update Service (maintenant Windows
+       Update for Business) à une date fixe
+     \item le second mardi du mois
+     \item problème possible: faille révélée le lendemain
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Limites du patch immédiat}
+    \begin{itemize}
+    \item test + observation + deploy: peut être très long
+    \item dans la plupart des entreprises, il faut compter plus de 90
+      jours avant l'application d'un patch
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Protections possibles}
+
+  \vfill
+
+   \begin{block}{Intégrité}
+     \begin{itemize}
+     \item faire des sauvegardes régulières
+     \item limiter les accès des utilisateurs (pour que les logiciels
+       qu'ils installent n'aient pas de droit sur la configuration de
+       sécurité)
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Confidentialité}
+    \begin{itemize}
+    \item chiffrement des données (sur SI et dans les mails)
+    \item canaux de communication hors SI pour les mots de passe et clefs
+    \item utilisation de logiciels spécialisés pour le stockage dans le Cloud (délégation de la sécurité au serveur)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+
+\end{frame}
+
+
+
+
+  
+
+\end{reveals}
+\end{document}
+ 
+
+

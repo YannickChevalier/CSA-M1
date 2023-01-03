@@ -1,0 +1,645 @@
+\Titre{Protocoles Cryptographiques}
+
+
+
+  
+\usepackage{ifthen}
+
+
+\def\txthl#1{ \ifthenelse{\lengthtest{#1 pt<0.5pt}}{\top}{\bot} }
+
+\begin{document}
+
+\begin{reveals}
+		
+\maketitle
+
+\section{Introduction}
+
+\begin{frame}
+  \frametitle{Protocoles \textit{vs.} Primitives}
+
+  \vfill
+
+   \begin{block}{Primitives}
+     \begin{itemize}
+     \item opérations de transformations sur les données
+     \item des garanties sont fournies sur les transformations
+       possibles et impossibles
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Protocoles cryptographiques}
+    \begin{itemize}
+    \item séquence de messages dont le contenu a été produit par
+      l'application de primitives cryptographiqes
+    \item un protocole cryptographique a un \textbf{but}, qui est une
+      assurance donnée à un participant s'il respecte les règles du protocole
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Suite du cours}
+    \begin{itemize}
+    \item buts habituels
+    \item notation simple pour les protocoles cryptographiques
+    \item analyse basique d'un protocole cryptographique
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+\section{Buts}
+
+\begin{frame}
+  \frametitle{Analyse d'une communication}
+
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}[%
+    role/.style = { rounded corners= 1ex , fill=blue!30,draw,inner sep=1ex},
+    channel/.style = { fill=red!30,draw, inner sep=1ex},
+    mycloud/.style = { inner sep=1.5em,
+      cloud,cloud puffs=19,cloud ignores aspect,
+      minimum width=5cm,minimum height=3.5cm,
+      align=center, 
+      draw,fill=white,
+    }
+    ]
+    \node[mycloud] (cloud) at (4,0) {} ;
+    \node (internet) at (4,0.8) {Internet \ensuremath{\bot/\bot}} ;
+    \node[role] (alice) at (0,0) {Alice \ensuremath{\top/\top}} ;
+    \node[role] (bob) at (8,0) {Bob \ensuremath{\top/\top}} ;
+    \node[channel] (ch) at (4,0) {canal de communication \ensuremath{\top/\top}};
+    \draw[<->] (alice.east) -- (ch.west) ;
+    \draw[<->] (ch.east) -- (bob.west) ;
+  \end{tikzpicture}
+  \end{center}
+
+  \vfill
+
+  \begin{block}{Communication à travers Internet}
+    \begin{itemize}
+    \item par défaut, aucune sécurité sur Internet
+    \item protocole cryptographique \(=\) mise en place d'un canal
+      protégeant les communications du reste d'Internet (séparation)
+    \item Buts possibles:
+      \begin{itemize}
+      \item intégrité: pas d'écriture sur le canal à partir d'Internet
+      \item confidentialité: pas de lecture sur le canal à partir d'Internet
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Formulation locale des buts}
+
+  \vfill
+
+   \begin{block}{Expression des buts}
+     \begin{itemize}
+     \item selon les protocoles, le pair n'est pas toujours connu
+     \item un sujet ne doit poser des buts que sur ses actions propres
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Pseudonymes et identité}
+    \begin{itemize}
+    \item identité: identifiant global d'un sujet
+    \item pseudonyme: identifiant local (à une exécution du protocole) d'un sujet:
+      \begin{itemize}
+      \item numéro de session d'un client
+      \item hôte et ports de communication
+      \item pseudonyme obtenu par un protocole dédié
+      \end{itemize}
+    \item identité cas particulier de pseudonyme (utilisation d'une
+      identité globale dans une session)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Buts pour les protocoles cryptographiques}
+
+  \vfill
+
+  \begin{block}{Intégrité}
+    \begin{itemize}
+    \item d'après les niveaux d'intégrité, seulement lors de la
+      réception de messages par un sujet
+    \item contenu \textit{a priori} inconnu: la propriété se réduit à
+      demander que le message a été envoyé par sujet désigné
+    \item identité inconnue: utilisation possible de pseudonymes
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Confidentialité}
+    \begin{itemize}
+    \item d'après les niveaux de confidentialité, seulement lors de 
+      l'émission de messages par un sujet
+    \item dans ce cas, la propriété se réduit à demander que le
+      message ne puisse être connu que par des sujets désignés
+    \item identité inconnue: utilisation possible de pseudonymes
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+   
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Authentification}
+
+  \vfill
+
+  \begin{block}{Preuve d'authentification}
+    \begin{itemize}
+    \item environnement distribué
+    \item authentification repose sur une preuve
+    \item la preuve ne peut être que le message reçu, ou une partie de
+      ce message
+    \end{itemize}
+  \end{block}
+
+  \vfill
+  \begin{block}{Challenge/réponse}
+    \begin{itemize}
+    \item déjà vu pour les protocoles de transmission de mot de passe
+    \item un sujet crée une valeur aléatoire \(r\)
+    \item la présence de cette valeur dans un message doit garantir
+      son origine
+    \end{itemize}
+  \end{block}
+
+  \vfill
+   
+\end{frame}
+
+\begin{frame}
+  \frametitle{Rejeu (replay)}
+
+  \vfill
+
+   \begin{block}{But d'authentification naïf}
+     \(A\) authentifie \(B\) en se basant sur la preuve \(Na\) si,
+     quand \(A\) reçoit un message contenant \(Na\), ce message a
+     précédement été envoyé par \(B\)
+   \end{block}
+
+  \vfill
+
+  \begin{block}{Rejeu}
+    rejouer un message signifie, pour un attaquant:
+    \begin{itemize}
+    \item enregistrer le déroulement du protocole
+    \item réutiliser ces messages pour se faire passer pour un des
+      participants
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Formulation naïve et rejeu}
+    \begin{itemize}
+    \item lors d'un rejeu, le message reçu a été précédement envoyé
+      par l'auteur légitime
+    \item pour l'authentification, il faut compter le nombre de fois
+      que le message a été envoyé/reçu
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Buts d'authentification}
+
+  \vfill
+
+   \begin{block}{Authentification faible}
+     \(A\) authentifie \(B\) en se basant sur la preuve \(Na\) si,
+     quand \(A\) reçoit un message contenant \(Na\), ce message a
+     précédement été envoyé par \(B\)    
+  \end{block}
+
+  \vfill
+
+   \begin{block}{Authentification forte}
+     \(A\) authentifie \(B\) en se basant sur la preuve \(Na\) si, le
+     message contenant \(Na\) a été reçu par \(A\) moins souvent qu'il
+     n'a été envoyé par \(B\)
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Confidentialité}
+
+  \vfill
+
+   \begin{block}{Besoin d'authentification}
+     \begin{itemize}
+     \item l'information envoyée est destinée à certaines personnes
+     \item il faut donc avoir la certitude de l'identité (ou de son
+       pseudonyme) d'un pair avant de lui envoyé une donnée
+       confidentielle
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{But de confidentialité}
+    Une partie d'un message envoyé par \(A\) ne peut être lue que par
+    \(B_1,\ldots,B_n\)
+  \end{block}
+
+  \vfill
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Spécification simplifiée d'un protocole}
+
+  \vfill
+
+   \begin{block}{Parties utilisées}
+     \begin{description}
+     \item[connaissances initiales:] pour chaque sujet, une liste de valeurs connues
+     \item[échange:] une suite de communications
+       \[
+         \begin{array}{rc@{~\ensuremath{\rightarrow}~}c@{~:~}l}
+         1. & A & B& M_1 \\
+         2. & B & A& M_2 \\
+           \multicolumn{4}{c}{\ensuremath{\vdots}}\\
+         \end{array}
+       \]
+     \item[Buts:] la description des buts de confidentialité et d'authentification
+     \end{description}
+  \end{block}
+
+  \vfill
+  \begin{block}{Note}
+    Pour simplifier, on utiliser \(\lbrace\_\rbrace\_\) pour le
+    chiffrement symétrique, asymétrique, et la signature digitale. La
+    clef utilisée indique l'opération utilisée.
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+
+
+
+
+
+\section{TLS}
+
+\begin{frame}
+  \frametitle{Historique}
+
+  \vfill
+
+   \begin{block}{SSL}
+     \begin{itemize}
+     \item débuts d'internet
+     \item protocole proposé par Netscape (adresses \texttt{https})
+     \item plusieurs versions (v1,v2,v3)
+     \item toutes buggées
+     \end{itemize}
+   \end{block}
+
+  \vfill
+  \begin{block}{TLS}
+    \begin{itemize}
+    \item standardisation IETF de SSL
+    \item TLS 1.0 = SSL v3 (sauf détails mineurs)
+    \item version courante 1.2 (théorie), 1.1 en pratique
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+\begin{frame}
+  \frametitle{Fonctionnement de TLS}
+
+  \vfill
+
+   \begin{block}{Négociation}
+     \begin{itemize}
+     \item le client et le serveur s'entendent sur la version à utiliser
+     et  sur les algorithmes à utiliser dans les phases suivantes
+     \item risque: attaque demandant d'utiliser une version buggée
+     \end{itemize}
+  \end{block}
+
+  \vfill
+  \begin{block}{Rendez-vous (handshake)}
+    \begin{itemize}
+    \item phase d'authentification
+    \item négociation d'un contexte de sécurité (clef secrète)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+  \begin{block}{Utilisation}
+    \begin{itemize}
+    \item chiffrement symétrique des messages échangés basé sur le contexte de sécurité
+    \item on chiffre le flux de message, pas les messages individuels 
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Fin/renégociation}
+    \begin{itemize}
+    \item lorsque la période de validité du contexte de sécurité se termine
+    \item ou à la demande d'un des 2 participants
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Négociation}
+
+  \vfill
+
+   \begin{block}{Négociation initiale}
+     \begin{itemize}
+     \item dans le protocole HTTP, demande de changement du protocole
+       de transport (client ou serveur, mot-clef \texttt{Connection})
+     \item valeurs du champ \texttt{upgrade}: algorithmes supportés par le
+       navigateur, par ordre de préférence
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+\begin{verbatim}
+GET /hello.txt HTTP/1.1
+Host: www.example.com
+Connection: upgrade
+Upgrade: HTTP/2.0, SHTTP/1.3, IRC/6.9, RTA/x11
+\end{verbatim}
+  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Rendez-vous (Handshake)}
+
+  \vfill
+
+   \begin{block}{Principe}
+     \begin{itemize}
+     \item protocole d'authentification mutuelle, utilisation de
+       certificats (voir plus loin)
+     \item Diffie-Hellman le plus utilisé
+     \item \textbf{mais} beaucoup d'implémentations (\(\sim\) 90\%)
+       avec de mauvais paramètres
+     \end{itemize}
+  \end{block}
+
+  \vfill
+  \begin{block}{Protocole de Diffie-Hellman}
+    \(A\) connait \(A,B,g,N,Na\), et \(B\) connait \(A,B,g,N,Nb\)
+    (\(Na\), \(Nb\) aléatoires)
+    \[
+      \begin{array}{cr@{\ensuremath{\rightarrow}}c@{:}l}
+        1.& A & B & g^{Na} \mod N \\
+        2. & B & A & g^{Nb} \mod N\\
+      \end{array}
+    \]
+    But: \(g^{Na\times Nb} \mod N\) est connu seulement de \(A\) et \(B\)
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Explications Diffie-Hellman}
+
+  \vfill
+
+   \begin{block}{Calcul du secret}
+     \begin{itemize}
+     \item \(g^{Na\times Nb} \mod N = {g^{Na}}^{Nb} \mod N\)
+     \item \(g^{Na\times Nb} \mod N = {g^{Nb}}^{Na} \mod N\)
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Robustesse (jeu)}
+    \begin{itemize}
+    \item on doit au joueur soit:
+      \begin{itemize}
+      \item \((g^{Na} \mod N,g^{Nb} \mod N,g^{Na\times Nb} \mod N)\)
+      \item \((g^{Na} \mod N,g^{Nb} \mod N,g^{r} \mod N)\), où \(r\)
+        est un nombre aléatoire
+      \end{itemize}
+    \item le joueur gagne si il devine correctement quel choix a été
+      fait
+    \item Hypothèse de Diffie-Hellman Décisionnel (DDH): aucun joueur
+      (machine de Turing) réaliste ne peut faire mieux que pile ou
+      face
+    \item Si un observateur peut calculer une partie du secret à
+      partir de l'échange, il peut faire mieux que une chance sur deux
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Utilisation}
+
+  \vfill
+
+  \begin{block}{Chiffrements de flux}
+    \begin{itemize}
+    \item soit chiffrement type Vernam, avec clair \(\oplus\) nombre
+      aléatoire
+    \item soit chiffrement par bloc: la même clef est toujours
+      utilisée, mais le block précédent est pris en compte
+    \item il y a une attaque générique sur les chiffrements par blocs
+      (mais faible probabilité de succès)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+  \begin{block}{Algorithmes utilisés}
+    \begin{itemize}
+    \item par block: RCA, 3DES (seuls disponibles sur XP),
+      AES,\(\ldots\)
+    \item par flux: Salsa, Chacha, blowfish,\(\ldots\)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+
+\section{PKI}
+
+\begin{frame}
+  \frametitle{Retour sur Diffie-Hellman}
+
+  \vfill
+
+   \begin{block}{Pas d'authentification !}
+     \begin{itemize}
+     \item un attaquant \(C\) peut s'immiscer dans un échange entre
+       \(A-B\) pour le remplacer par deux échanges \(A-C\) et \(C-B\)
+     \item on parle d'attaque par un intermédiaire
+       (\emph{man-in-the-middle})
+     \item il y a bien un secret partagé, mais on ne sait pas avec qui
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Ajout de l'authentification}
+    \begin{itemize}
+    \item pour authentifier la session, les messages sont signés par
+      le client et le serveur en:
+      \begin{itemize}
+      \item utilisant une clef de signature
+      \item la clef de validation correspondante est envoyée en même
+        temps
+      \end{itemize}
+    \item problème: comment relier la clef à une identité ?
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Certificats}
+
+  \vfill
+  \begin{block}{Certificat}
+    Un certificat est un document signé digitalement par un sujet.
+  \end{block}
+
+  \vfill
+
+
+
+   \begin{block}{Utilisation}
+     \begin{itemize}
+     \item un sujet s'engage sur la véracité d'informations en signant
+       ces informations
+     \item 2 cas possibles:
+       \begin{itemize}
+       \item soit le lecteur connait la clef de validation permettant
+         de valider la signature
+       \item soit le lecteur doit obtenir la preuve que la clef à
+         utiliser pour la validation est bien celle du sujet
+       \end{itemize}
+     \end{itemize}
+  \end{block}
+
+  \vfill
+
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Infrastructures de clefs publiques}
+
+  \vfill
+
+  \begin{block}{But: propagation de la confiance}
+    \begin{itemize}
+    \item confiance: ensemble de certificats justifié par des certificats connus du lecteur
+    \item http: justification existe \(=\) cadenas vert, pas de justification
+      \(=\) cadenas rouge/avertissement
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Confiance dans les navigateurs}
+    \begin{itemize}
+    \item chaque navigateur a une liste des certificats reconnus
+      (certificats \emph{racines} pour la confiances)
+    \item pour être accepté, un site Internet doit obtenir un
+      certificat qui peut être validé pour un certificat racine
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+\begin{frame}
+  \frametitle{Utilité et fragilité}
+
+  \vfill
+
+   \begin{block}{Problème d'initialisation}
+     il faut avoir confiance dans les entreprises qui émettent des
+     certificats racines
+   \end{block}
+
+  \vfill
+  \begin{block}{Exemple: navigateurs d'entreprise}
+    \begin{itemize}
+    \item des sociétés sont spécialisées dans l'émission de ``faux'' certificats
+    \item ces certificats sont mis par des entreprises dans le
+      navigateur de leurs employés
+    \item celà permet à la société émettrice d'intercepter les
+      communications https des employés (attaque Man-in-the-Middle par
+      la société)
+    \item avantage/désavantage: une entreprise a accès à l'historique
+      de navigation de ses salariés 
+    \item Certificate Transparency: effort pour permettre aux
+      internautes de savoir si les certificats qu'ils acceptent ont
+      été réellement émis par le site
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+
+
+\end{reveals}
+\end{document}
+ 

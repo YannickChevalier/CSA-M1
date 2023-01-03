@@ -1,0 +1,668 @@
+\Titre{Sécurité du Navigateur}
+
+
+  
+\usepackage{ifthen}
+
+
+\def\txthl#1{ \ifthenelse{\lengthtest{#1 pt<0.5pt}}{\top}{\bot} }
+
+\begin{document}
+
+\begin{reveals}
+	
+\def\pause{}
+	
+\maketitle
+
+
+\begin{frame}
+  \frametitle{But du cours}
+
+  \vfill
+
+  \begin{block}{Sécurité sur Internet}
+    \begin{itemize}
+    \item la sécurité côté serveur ne sera pas abordée
+    \item la sécurité des communications repose sur TLS
+    \item ce cours: sécurité du client
+    \end{itemize}
+  \end{block}
+  \vfill
+
+  \begin{block}{Plus généralement}
+    \begin{itemize}
+    \item exemple d'analyse détaillée d'un composant
+    \item avantage: tout le monde connait les navigateurs
+    \end{itemize}
+  \end{block}
+  \vfill
+\end{frame}
+\section{Architecture du client}
+
+\begin{frame}
+  \frametitle{S{\'e}paration spatiale (principe)}
+
+  \begin{block}{Principe d'un browser}
+    \begin{itemize}
+    \item  Il affiche un document {\`a} partir duquel il est possible de
+      faire des requ{\^e}tes vers des sites Webs
+    \item Ce document contient du html, avec des requ{\^e}tes form{\'e}es {\`a} partir
+      des balises \texttt{a}
+    \item Il contient aussi des scripts, \textit{i.e.}, des programmes
+      qui peuvent g{\'e}n{\'e}rer des requ{\^e}tes avec ou sans l'intervention de
+      l'utilisateur
+    \end{itemize}
+  \end{block}
+
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{S{\'e}paration spatiale (pratique)}
+
+  \begin{block}{Sandboxing}
+    Chaque fen{\^e}tre d'un browser est isol{\'e}e de son environnement:
+    \begin{itemize}
+    \item Politique de \emph{m{\^e}me origine} (SOP): un script sur
+      une page dans un sous-r\'epertoire de
+      \texttt{http://www1.example.com:80/} ne peut effectuer des
+      requ{\^e}tes que vers les sous-r\'epertoires du site
+      \texttt{http://www1.example.com:80/}
+    \item Partitionnement spatial: les browsers assurent que les
+      scripts h{\'e}berg{\'e}s par diff{\'e}rentes pages:
+      \begin{enumerate}
+      \item ne peuvent pas avoir de variables communes
+      \item ne partagent pas de codes de fonctions (mais copies de
+        code autoris{\'e}es)
+      \end{enumerate}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Contenu d'une page Web}
+
+  \begin{block}{Base}
+    \begin{itemize}
+    \item Une page Web est repr{\'e}sent{\'e}e par l'arbre des balises HTML
+      qu'elle contient (DOM)
+    \item Une balise sp{\'e}ciale, \texttt{script}, permet d'inclure en
+      plus n'importe quel programme {\'e}crit en un langage reconnu par le
+      browser
+    \item Langage universellement reconnu: JavaScript (JS)
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \begin{block}{Modification d'une page Web}
+    \begin{itemize}
+    \item Un script contenu dans une page peut modifier cette page
+    \item Il peut ajouter, modifier, ou supprimer des balises de
+      n'importe quel type
+    \item Le browser r{\'e}agit {\`a} ces modifications en temps r{\'e}el
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Communications {\`a} partir d'une page Web (1/2)}
+
+  \begin{block}{{\'e}l{\'e}ments HTML}
+    \begin{itemize}
+    \item Certains {\'e}l{\'e}ments HTML effectuent naturellement des requ{\^e}tes
+      GET (\texttt{img}, \texttt{script}, \texttt{a} si l'utilisateur clique)
+    \item Ces requ{\^e}tes sont d{\'e}finies par une url qui est recherch{\'e}e
+    \item L'usage est d'encoder des {\'e}ventuelles informations {\`a} passer
+      {\`a} un serveur dans cette url
+    \item Les scripts peuvent aussi envoyer des requ{\^e}tes POST
+      (\textit{e.g.}, soumission d'un formulaire)
+    \end{itemize}
+  \end{block}
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Communications {\`a} partir d'une page Web (2/2)}
+
+  \begin{block}{Requ{\^e}tes {\`a} partir de JavaScript}
+    \begin{itemize}
+    \item (universel) On cr{\'e}e un objet \texttt{XMLHttpRequest}
+    \item On indique:
+      \begin{itemize}
+      \item quelle m{\'e}thode HTTP on d{\'e}sire utiliser 
+      \item l'url {\`a} contacter
+      \item {\'e}ventuellement le contenu de la requ{\^e}te
+      \item la fonction {\`a} appeler lors de la r{\'e}ception de la r{\'e}ponse
+        (inutile si la requ{\^e}te est synchrone)
+      \end{itemize}
+    \item Et voil{\`a} !
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\section{Partitionnement spatial}
+
+
+\begin{frame}
+  \frametitle{Violations du partitionnement spatial (1/5)}
+
+  \begin{block}{Biblioth{\`e}ques}
+    \begin{itemize}
+    \item Il serait tr{\`e}s g{\^e}nant de demander {\`a} l'utilisateur de
+      recharger une biblioth{\`e}que tr{\`e}s r{\'e}pandue (\textit{e.g.}, JQuery)
+      chaque fois qu'il va sur un nouveau site
+    \item Solution:
+      \begin{itemize}
+      \item Utilisation du cache du browser
+      \item Utilisation d'un \emph{Content Distribution Network} pour
+        distribuer la version de la biblioth{\`e}que qu'on utilise
+      \end{itemize}
+    \item Pour cela, on a besoin d'autoriser le chargement de scripts
+      sur d'autres sites Web
+    \end{itemize}
+  \end{block}
+  
+  \pause
+
+  \important{L'importation de scripts n'est jamais soumise {\`a} la
+    politique de m{\^e}me origine}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Violations du partionnement spatial (2/5)}
+
+  \begin{block}{Extensions}
+    \begin{itemize}
+    \item Les extensions des browsers peuvent d{\'e}finir des pages
+      virtuelles
+    \item Ces pages sont isol{\'e}es des pages affich{\'e}es (pour le
+      code, pas pour les \'el\'ements)
+    \item Requ{\^e}tes Javascript et \'ev\'enements possibles entre ces
+      pages et celles affich{\'e}es
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Cookies/localstorage}
+    Stockage d'informations dans le browser
+    \begin{itemize}
+    \item Pas de diff{\'e}rences pour la s{\'e}curit{\'e}
+    \item D{\'e}finitions de domaine diff{\'e}rente pour les cookies du reste
+    \item Le code servi par un domaine ne peut utiliser que des
+      informations d{\'e}finies par ce domaine
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Violations du partionnement spatial (3/5)}
+  
+  \begin{block}{La s{\'e}curit{\'e}, c'est emb{\^e}tant !}
+    D'apr{\`e}s ce qui a {\'e}t{\'e} {\'e}crit, il n'est pas possible
+    \begin{itemize}
+    \item de faire r{\'e}f{\'e}rence {\`a} une ressource h{\'e}berg{\'e}e par
+      un autre domaine
+    \item d'envoyer des informations personnelles sur l'utilisateur {\`a}
+      un autre site (\textit{e.g.}, \texttt{doubleclick.com})
+    \end{itemize}
+  \end{block}
+
+  \pause
+  \begin{block}{Cross-Origin Resource Sharing (CORS)}
+    \begin{itemize}
+    \item Les scripts situ{\'e}s sur la page servie par le domaine A
+      peuvent effectuer des requ{\^e}tes vers le domaine B
+    \item Pour avoir une r{\'e}ponse, le domaine B doit \^etre
+      configur{\'e} pour accepter explicitement les requ{\^e}tes venant du
+      domaine A (ou de tout domaine)
+    \end{itemize}
+  \end{block}
+  \pause
+
+  \important{Politique de contr{\^o}le d'acc{\`e}s {\`a} compl{\'e}ter {\'e}ventuellement
+    au sein domaine B avec des informations personnelles de l'utilisateur}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Violations du partionnement spatial (4/5)}
+
+  \begin{block}{Rappel}
+    \begin{itemize}
+    \item Les scripts peuvent {\^e}tre servis par n'importe quel site
+    \item Donc on peut effectuer une requ{\^e}te vers n'importe quel site
+      en utilisant une balise \texttt{script} avec une url forg{\'e}e correctement
+    \end{itemize}
+  \end{block}
+
+
+  \pause
+
+  \begin{block}{JSON/JSONP (utilisation légitime)}
+    \begin{itemize}
+    \item JSON: codage d'objets JavaScript simples en du texte
+    \item JSONP: enrobage du texte pour fournir un code JS valide
+      (appel d'une fonction)
+    \item Utilisation:
+      \begin{itemize}
+      \item insertion d'une balise \texttt{script} dans la page avec une
+        adresse codant les informations qu'on d{\'e}sire envoyer
+      \item on laisse le navigateur \emph{{\'e}valuer} le code JS re{\c c}u en
+        r{\'e}ponse de la requ{\^e}te
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Violation du partitionnement spatial (5/5)}
+
+  \begin{block}{frame/iframe}
+    \begin{itemize}
+    \item {\'E}l{\'e}ment html permettant d'inclure un autre site
+    \item Les DOM sont s{\'e}par{\'e}s correctement en fonction de la SOP
+    \item \url{http://qnimate.com/same-origin-policy-in-nutshell/}
+    \end{itemize}
+  \end{block}
+
+  \pause
+  
+  \begin{block}{Violation de partition}
+    \begin{itemize}
+    \item Gestion complexe de l'affichage ({\`a} quels {\'e}l{\'e}ments un pixel
+      est reli{\'e})
+    \item Transparence
+    \item En pratique, une action de l'utilisateur peut toucher
+      plusieurs {\'e}l{\'e}ments, y compris en dehors et {\`a} l'int{\'e}rieur d'une
+      (i)frame
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cookies}
+
+  \begin{block}{D{\'e}finition du domaine}
+    \begin{itemize}
+    \item Par d{\'e}faut, un cookie est li{\'e} {\`a} un domaine et un chemin dans
+      ce domaine (bleu ignor\'e{}):
+      $$
+      \underbrace{\text{\color{blue}\tt http://}}_{\text{protocole}}
+      \underbrace{\text{\color{red}\tt www.example.com/}}_{\text{domaine}}
+      \underbrace{\text{\color{red}\tt dir1/dir2/}}_{\text{chemin}}
+      \underbrace{\text{\color{blue}\tt toto.html}}_{\text{fichier}}
+      $$
+    \item Par d{\'e}faut, le protocole utilis{\'e} n'est pas pris en compte
+    \item Secure Cookie: en plus, il faut utiliser le protocole HTTP
+    \item Il est possible de sp{\'e}cifier un autre domaine pour le cookie
+      (third-party cookies), mais bloquables par l'utilisateur
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \important{La politique de gestion des cookies est {\'e}tablie sur des
+    bases diff{\'e}rentes de celle des autres ressources, ce qui est une
+    source potentielle de conflit}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Utilisation d'un cookie}
+
+  \begin{block}{Positionnement du domaine}
+    Une page \`a{} l'adresse \texttt{a.b/c/d/} peut cr\'eer des cookies:
+    \begin{itemize}
+    \item pour un suffixe du domaine (en enlevant une partie
+      \texttt{a}) de son adresse
+    \item pour un pr\'efixe de son r\'epertoire (en enlevant un
+      sous-chemin \texttt{d})
+    \item il faut au moins 2 parties dans le domaine (\texttt{example}
+      et \texttt{org}), plus quelques restrictions (d\'ependantes du
+      browser) pour \'eviter les gags\ldots{}
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Utilisation}
+    \begin{itemize}
+    \item Un cookie est stock\'e dans le browser
+    \item Chaque fois qu'une requ\^ete est faite vers un sous-domaine
+      et/ou un sous-r\'epertoire d'un cookie, le cookie est ajout\'e dans
+      le header HTTP de la requ\^ete
+    \item Cons\'equence (header HTTP): taille limit\'e \`a 4ko
+    \item Ajout automatique, quelque soit la page faisant la requ\^ete
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{localStore et sessionStore}
+
+  \begin{block}{Quelques caract\'eristiques en vrac}
+    \begin{itemize}
+    \item Li\'e \`a une page Web ($\neq$ li\'e aux requ\^etes vers\ldots{}) en
+      fonction de SOP (g\'er\'e par le navigateur)
+    \item Pas de limitation de taille
+    \item Programmatiquement, le code JS sur une page Web a acc\`e{}s \`a 2
+      variables \emph{localStorage} et \emph{sessionStorage}, et en
+      fait ce qu'il veut.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\section{Attaques li{\'e}es au browser}
+
+\begin{frame}
+  \frametitle{Utilisation des \'el\'ements statiques}
+  
+  \begin{block}{Principe}
+    \begin{itemize}
+    \item L'affiche d'une page par le navigateur l'oblige \`a
+      r\'ecup\'erer certains \'el\'ements (essentiellement
+      \texttt{link/stylesheets}, \texttt{img}, les scripts sont
+      bloquables)
+    \item Pour r\'ecup\'erer ces \'el\'ements, il doit envoyer des
+      requ\^etes GET contenant entre autres le domaine (SOP) de la
+      page faisant la requ\^ete et les cookies
+    \end{itemize}
+  \end{block}
+
+  \pause{}
+  \begin{block}{Exemples:}
+    \begin{itemize}
+    \item Insertion d'une image dans un mail pour savoir combien de
+      fois il a \'et\'e ouvert (sans cookies)
+      \begin{center}
+        \texttt{\textcolor{red}{malicieux ou l\'egitime ?}}
+      \end{center}
+    \item Dans une page, coupl\'e \`a un third-party cookie, permet de
+      suivre les actions d'un utilisateur 
+      \begin{center}
+        \texttt{\textcolor{red}{Publicit\'es, extensions Chrome/Firefox}}
+      \end{center}
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Cross-Site Request Forgery (CSRF)}
+
+  \begin{block}{Non-blocage des images + cookies}
+    \begin{itemize}
+    \item {\`A} la diff{\'e}rence des localStorage, pour lesquels cela demande
+      un peu plus de travail, les cookies d'un domaine sont envoy{\'e}s
+      lors de chaque requ{\^e}te vers ce domaine.
+    \item La page d'un domaine A peut donc faire une requ{\^e}te vers un
+      domaine B en utilisant les cookies (\textit{e.g.} identification
+      de l'utilisateur) de ce domaine
+    \item Si le domaine B ne v{\'e}rifie pas que la requ{\^e}te est issue
+      d'une page qu'il a servie, et si cette requ{\^e}te est valide, il
+      va l'accepter.
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \begin{block}{CSRF}
+    \begin{itemize}
+    \item Un site malicieux utilise le fait que l'utilisateur est
+      potentiellement logu{\'e} sur un autre site
+    \item Il envoie des requ{\^e}tes {\`a} cet autre site qui seront
+      accompagn{\'e}es des cookies de cet autre site (donc authentifi{\'e}es)
+    \item Ex: faire un virement si l'autre site est celui d'une
+      banque, r{\'e}cup{\'e}rer une liste de contact, etc.
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Login CSRF}
+  \framesubtitle{Attaque d{\'e}pendant du browser utilis{\'e}}
+
+  \begin{block}{Partitionnement spatial lors de la visualisation}
+    \begin{itemize}
+    \item un site malicieux peut superposer une image opaque pour
+      couvrir une iframe
+    \item L'image contient un captcha
+    \item L'iframe contient la page de login d'un site (Yahoo!,
+      Google, etc.)
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \begin{block}{Login CSRF}
+    \begin{itemize}
+    \item Le captcha demande {\`a} l'utilisateur de rentrer le login et le
+      mot de passe de l'attaquant
+    \item Une fois l'utilisateur loggu{\'e}, l'attaquant r{\'e}cup{\`e}re sur son
+      compte les donn{\'e}es de navigation de l'utilisateur
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Interception de donn{\'e}es}
+
+  \begin{block}{Probl{\`e}me de partitionnement spatial}
+    \begin{itemize}
+    \item Couverture d'une iframe par un {\'e}l{\'e}ment presque transparent
+    \item Les {\'e}v{\'e}nements utilisateurs sont aussi envoy{\'e}s {\`a} cet {\'e}l{\'e}ment
+    \item Permet au site h{\^o}te de r{\'e}cup{\'e}rer les donn{\'e}es envoy{\'e}es au
+      site h{\'e}berg{\'e} dans l'iframe
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \begin{block}{Peu de solutions}
+    \begin{itemize}
+    \item Beaucoup de sites utilisent de mani{\`e}re critique le
+      recouvrement par des {\'e}l{\'e}ments transparents
+    \item Assurer le partitionnement spatial des pixels serait tr{\`e}s
+      g{\^e}nant (popup html, listes descendantes)
+    \item Pas de solutions prévues
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{JSONP}
+
+  \begin{block}{JSONP}
+    \begin{itemize}
+    \item L'utilisation de JSONP n{\'e}cessite une bonne collaboration
+      entre les 2 domaines
+    \item Mais {\`a} cause de l'{\'e}valuation, le domaine B obtient tous les
+      pouvoirs (parce qu'il peut renvoyer ce qu'il veut {\`a} la requ{\^e}te,
+      ce sera {\'e}valu{\'e}) sur la page affich{\'e}e et ses donn{\'e}es
+    \item Autrement dit, il faut avoir une confiance absolue dans le
+      domaine B pour lui faire des requ{\^e}tes \textit{via} JSONP
+    \end{itemize}
+  \end{block}
+
+
+\end{frame}
+
+
+\section{Quelques solutions possibles}
+
+
+\begin{frame}
+  \frametitle{Iframes}
+
+  \begin{gitemize}
+  \item Les iframes sont des sources majeures d'ins{\'e}curit{\'e} {\`a} cause de
+    l'absence de politique de contr{\^o}le d'acc{\`e}s efficace sur les
+    {\'e}v{\'e}nements dans le browser
+  \item Seule solution pour s{\'e}curiser un site: interdire au browser de
+    l'afficher dans un iframe
+  \item Mais cela interdit aussi les mashup, donc rend le site moins
+    utilisable
+  \end{gitemize}
+
+  \pause
+  \begin{block}{Configuration de Apache (\emph{httpd.conf}}
+\begin{trivlist}
+\item \tt Header always append X-Frame-Options SAMEORIGIN
+\item \tt Header always append X-Frame-Options DENY
+\end{trivlist}
+    \begin{itemize}
+    \item Dans le premier cas, les iframes sont autoris{\'e}es sur le m{\^e}me
+      site
+    \item Dans le second, elles sont toujours refus{\'e}es
+    \item Header des r{\'e}ponses {\`a} un GET, honor{\'e} par tous
+      les browsers r{\'e}cents
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{CSRF}
+
+  \begin{block}{Base des CSRF}
+    \begin{itemize}
+    \item L'attaquant devine que l'utilisateur est loggu{\'e} sur un
+      certain site
+      \begin{center}
+        on n'y peut rien s'il devine correctement
+      \end{center}
+    \item L'attaquant peut construire des requ{\^e}tes ayant du sens
+      \begin{center}
+        Par contre, on peut s'arranger pour que les requ{\^e}tes incluent
+        un {\'e}l{\'e}ment al{\'e}atoire non-devinable
+      \end{center}
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \begin{block}{Emp{\^e}chement des requ{\^e}tes CSRF}
+    \begin{itemize}
+    \item Demander au serveur de regarder la page d'origine de la
+      requ{\^e}te
+      \begin{center}
+        utile, mais pas suffisant surtout si le site peut {\^e}tre dans
+        une iframe
+      \end{center}
+    \item Ajouter une valeur al{\'e}atoire aux requêtes lorsqu'un utilisateur
+      est loggu{\'e}
+      \begin{center}
+        cette valeur sera pr\'esente dans toutes les requ\^etes issues d'une
+      page Web servie, il reste \`a la v\'erifier
+      \end{center}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Emp{\^e}chement des requ{\^e}tes CSRF}
+  \framesubtitle{Sp{\'e}cifique {\`a} chaque serveur d'application}
+
+ 
+    \important{Application s{\'e}curis{\'e}e par d{\'e}faut}
+    
+  \pause
+  \begin{block}{Exemple (Rails), app/controllers/application\_controller.rb}
+    \begin{trivlist}
+    \item \tt protect\_from\_forgery
+    \end{trivlist}
+  \end{block}
+
+    \pause
+
+    \begin{block}{Liste d'attaques}
+      \url{http://guides.rubyonrails.org/security.html}
+    \end{block}
+
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Fragilit\'e{} de SOP}
+  
+  \begin{block}{Rappels:}
+    \begin{itemize}
+    \item Same Origin Policy: le serveur r\'epond en indiquant les
+      domaines pouvant utiliser la r\'eponse
+    \item Idem pour l'affichage dans une frame
+    \end{itemize}
+  \end{block}
+
+  \pause{}
+  \begin{block}{La s\'ecurit\'e, c'est emb\^etant$\ldots$}
+    \begin{itemize}
+    \item HTML5 a ajout\'e{} SOP sur plusieurs \'el\'ements (attribut \texttt{crossorigin})
+    \item La s\'ecurit\'e repose sur la collaboration entre le requ\'erant et le serveur
+    \item Mais il est possible d'ins\'erer un serveur non-coop\'eratif
+      entre les deux pour \'eliminer les headers intempestifs
+      (\url{www.anyorigin.com}, $\ldots$), contournent ces
+      d\'efenses$\ldots$
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Extensions}
+
+  \vfill
+
+  \begin{block}{Résumé:}
+    \begin{itemize}
+    \item une extension est une page Web qui est exécutée ``en mode privilégié''
+    \item la SOP ne s'applique pas aux extensions
+    \item \url{http://www.scs.stanford.edu/~deian/pubs/heule:2015:the-most.pdf}
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Exemples d'attaque par des extensions}
+    \begin{itemize}
+    \item AdBlock, qui modifie les pages Web et enlève du revenu publicitaire
+    \item diverses extensions ajoutent une image \(1\times 1\) à
+      chaque page Web pour tracer l'utilisateur
+    \item CSRF après récupération des données de session
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \important{seules les extensions fournies par un Web Store sont
+    analysées, les autres peuvent tout changer}
+
+  \vfill
+
+\end{frame}
+
+
+
+
+\end{reveals}
+\end{document}
+ 

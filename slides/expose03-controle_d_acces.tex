@@ -1,0 +1,483 @@
+\Titre{Contrôle d'accès}
+
+
+
+  
+\usepackage{ifthen}
+
+
+\def\txthl#1{ \ifthenelse{\lengthtest{#1 pt<0.5pt}}{\top}{\bot} }
+
+\begin{document}
+
+\begin{reveals}
+		
+\maketitle
+
+
+\section{Principes}
+
+\begin{frame}
+  \frametitle{Système d'information décomposé}
+
+
+  % \begin{center}
+  %   \begin{tikzpicture}
+  %     \foreach \j in {0,1,...,4}{% Two indices running over each
+  %       \pgfmathsetmacro{\x}{rnd}
+  %       \pgfmathsetmacro{\y}{rnd}
+        
+  %       \pgfmathsetmacro{\alconf}{rnd}
+  %       \pgfmathsetmacro{\alint}{rnd}
+  %       \node[draw,circle,inner sep=2pt,fill,label={\ensuremath{\scriptscriptstyle \txthl{\alconf}/\txthl{\alint}}}] (\j)at (\x*5,\y*5) {} ;
+  %     } 
+  %     \draw[->] (1) -- (2) ;
+  %     \draw[->] (1) -- (4) ;
+  %     \draw[->] (2) -- (0) ;
+  %     \draw[->] (3) -- (2) ;
+  %     \draw[->] (4) -- (3) ;
+  %     \draw[->] (4) -- (1) ;
+  %     \draw[->] (0) -- (4) ;
+  %   \end{tikzpicture}
+  %   \parbox{0.7\textwidth}{%
+  %     \begin{trivlist}
+  %     \item \tikz{\node[draw,circle,inner sep=2pt,fill] {}} composant
+  %     \item \(\top/\bot\) niveaux pour la confidentialité et l'intégrité
+  %     \item \(\rightarrow\) flux d'information
+  %     \end{trivlist}
+  %   }
+  % \end{center}
+
+  \vfill
+
+  \begin{block}{But}
+    \begin{itemize}
+    \item recenser les \textbf{accès} possibles des sujets sur les
+      objets (lire, écrire, \ldots)
+    \item définir les possibilités d'\textbf{accès} des sujets aux
+      composants
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Contrôle d'accès}
+    \begin{itemize}
+    \item authentifier les sujets pour s'assurer de leur niveau d'habilitation/d'assurance
+    \item dire quel(s) niveaux d'habilitation/assurance permettent quels accès à quels objets
+    \item assurer que les accès réels aux données sont conformes 
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+
+\section{Identification et Authentification}
+ 
+\begin{frame}
+  \frametitle{Identification}
+
+  \vfill
+
+  \begin{block}{Résumé}
+    ensemble des attributs définissant un sujet
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Plusieurs types d'attributs possibles:}
+    \begin{itemize}
+    \item attributs physique: empreintes digitales, de l'\oe il, de
+      l'oreille, visage, etc. \(\rightarrow\) \textbf{biométrie}
+    \item contexte d'exécution
+    \item possession d'objets ou de connaissances
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Identification biométrique}
+
+  \vfill
+
+  \begin{block}{Avantages}
+    \begin{itemize}
+    \item liée à une personne physique 
+    \item pas de ``délégation'' de l'identité à un objet (clef, carte d'accès)
+    \item ne nécessite pas de connaissances spéciales
+    \item ne nécessite pas le consentement du sujet
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Inconvénients}
+    \begin{itemize}
+    \item certaines caractéristiques peuvent être copiées (soit pour
+      tout le monde, soit pour une personne)
+    \item lorsque c'est le cas, la personne ou le système doivent être
+      désactivés de manière permanente
+     \item ne nécessite pas le consentement du sujet
+   \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Exemple limite de biométrie}
+    \begin{itemize}
+    \item remplacement des captchas par des mesures du mouvement de la
+      souris pour identifier si l'utilisateur d'un site web est humain
+    \item les paramètres sont gardés secrets pour qu'ils ne puissent
+      pas être simulés par un programme
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Identification par le contexte}
+
+  \vfill
+
+  \begin{block}{En dehors des SI:}
+    \begin{itemize}
+    \item un homme a assisté gratuitement à plein d'événements en
+      mettant un dossard jaune fluo
+    \item \emph{The Art of Deception} (K.~Mitnick): ingénierie
+      sociale, source majeure d'attaque sur les SI
+    \item morale: il faut l'éviter, et pour cela, il faut éduquer les humains utilisant le SI
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Dans les SI:}
+    \begin{itemize}
+    \item \texttt{/dev/securetty}: possible d'interdire le login de l'administrateur sur certaines consoles
+    \item sous linux, possible d'ajouter certains groupes (voir plus
+      loin) à des utilisateurs loggués à partir de certaines consoles
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Identification par possession}
+
+  \vfill
+
+  \begin{block}{Principe:}
+    \begin{itemize}
+    \item on suppose que seul un sujet donné possède un certain objet
+      ou une certaine connaissance
+    \item cet objet ou cette connaissance permet d'identifier le sujet
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Possession d'objet}
+    \begin{itemize}
+    \item carte bleue, numéro \textbf{au dos}
+    \item clef
+    \item carte RSA (carte qui génère un code unique valable un court
+      moment)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Possession de connaissance}
+    \begin{itemize}
+    \item \textbf{mot de passe}
+    \item certificat cryptographique
+    \item captcha
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\section{Authentification}
+
+\begin{frame}
+  \frametitle{Authentification}
+
+  \vfill
+
+  \begin{block}{Authentification par un composant}
+    \begin{itemize}
+    \item un mot de passe \emph{identifie} un sujet
+    \item quand un sujet se présente, on veut qu'il \emph{prouve} son identité
+    \item l'authentification par un composant consiste pour ce
+      logiciel à obtenir une preuve de l'identité du sujet
+    \item lorsqu'il y a un risque d'écoute, la preuve consiste en
+      général en un protocole challenge/réponse
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Challenge/réponse}
+    \begin{itemize}
+    \item au cas où quelqu'un écouterai, ou veut une réponse différente
+      à chaque fois que quelqu'un essaye de s'authentifier (re-jeu)
+    \item challenge: nombre aléatoire
+    \item réponse: construite à partir du mdp et du nombre aléatoire
+    \end{itemize}
+  \end{block}
+
+  \vfill
+  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Variations sur l'authentification}
+
+  \vfill
+
+  \begin{block}{Authentification fédérée}
+    \begin{itemize}
+    \item plusieurs SI indépendants se font confiance pour identifier
+      leurs utilisateurs (Single Sign-On, OAuth)
+    \item surtout sur le Web,  login \textit{via} Google ou Facebook, eduroam
+    \item en dehors du Web, pour les réseaux de téléphonie (partage
+      Free/Orange, à l'étranger)
+    \end{itemize}
+  \end{block}
+  
+  \vfill
+
+  \begin{block}{Same Sign-on}
+    plusieurs couples login/mot de passe permettent de se connecter au
+    même compte (\textit{e.g.}, Office 365)
+  \end{block}
+
+  \vfill
+  \begin{block}{Impact sur la sécurité}
+    \begin{itemize}
+    \item Single Sign-On: les organisations ne sont plus les uniques
+      responsables de leurs sujets
+    \item Same Sign-On: identité partagée, donc ressources partagées
+      dans le cloud
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+\begin{frame}
+  \frametitle{Au-delà de l'authentification}
+
+  \vfill
+
+  \begin{block}{Non-répudiation}
+    \begin{itemize}
+    \item pour l'authentification, le composant se fait confiance
+    \item la preuve ne peut en général pas être présentée à un tiers
+      qui n'a pas confiance en le composant
+    \item lorsqu'il faut pouvoir garder la preuve d'un accès (pour des
+      raisons légales) indépendante du composant, on parle de
+      non-répudiation
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\section{Classification des sujets}
+
+\begin{frame}
+  \frametitle{Groupes}
+
+  \vfill
+
+  \begin{block}{Définition}
+    un \emph{groupe} est un ensemble de sujets.
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Exemples (Linux)}
+  \begin{itemize}
+  \item groupes administratifs: root, sys, adm, etc.
+  \item groupes liés à du matériel: video, audio cdrom, etc.
+  \item groupes liés à une application:www-data, irc, mail, etc.
+  \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+\begin{frame}
+  \frametitle{Rôles}
+
+  \vfill
+
+  \begin{block}{Définition}
+    Un rôle est un sujet ou un ensemble de rôles
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Cas d'utilisations}
+    \begin{itemize}
+    \item bases de données SQL
+    \item applications Web
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Intérêt}
+    \begin{itemize}
+    \item permet de hiérarchiser les permissions
+    \item adapter pour les systèmes complexes
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+\begin{frame}
+  \frametitle{Attributs}
+
+  \vfill
+
+  \begin{block}{Définition}
+    Caractéristique affectées à un sujet
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Intérêt}
+    \begin{itemize}
+    \item permet d'être plus agile qu'avec des rôles
+    \item avec des attributs correspond à des permissions précises,
+      il est plus facile de modifier ces permissions
+    \item les capacités sous linux sont aussi utilisées pour réduire
+      les permissions à celles réellement utiles (voir plus bas)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+\section{Conformité des accès}
+
+\begin{frame}
+  \frametitle{Permissions sous Unix}
+
+  \vfill
+
+  \begin{block}{Codage}
+    \begin{itemize}
+    \item entier sur 4 chiffres en base 8
+    \item convention C/Unix: les entiers en base 8 commencent par un 0
+    \item donc une permission est un entier \(< 07777\)
+    \item les 0 en tête peuvent être enlevés
+    \item les autres chiffres se lisent sous la forme \(1 +2 +4\)
+    \item ex: 5 contient 1 et 4, 3 contient 1 et 2, 0 ne contient
+      rien, etc.
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{3 derniers chiffres}
+
+  \vfill
+
+  \begin{block}{Lecture des permissions}
+    \begin{itemize}
+    \item possesseur-groupe-autre
+    \item lors d'un accès, on regarde les chiffre le plus précis,
+      \textbf{pas le plus avantageux}
+    \end{itemize}
+  \end{block}
+
+  \vfill
+  \begin{center}
+    \begin{tabular}{|l|p{.4\textwidth}|p{.4\textwidth}|}
+      \hline
+      & fichier & répertoire \\\hline
+      4 (r) & lecture & lecture du contenu\\\hline
+      2 (w) & écriture & ajout, suppression, ou renommage
+      des fichiers contenus\\\hline
+      1 (x) & exécution comme programme & cd et recherche
+      dans le répertoire\\\hline
+    \end{tabular}
+  \end{center}
+  \vfill
+\end{frame}
+
+\begin{frame}
+  \frametitle{Premier chiffre}
+  \framesubtitle{ne peut être enlevé qu'avec -}
+
+  \vfill
+  \begin{block}{1/\(\pm\)t}
+    \begin{itemize}
+    \item le droit d'écriture sur un répertoire permet d'ajouter ou
+      d'enlever des fichiers dans ce répertoire
+    \item \texttt{sticky bit}: un utilisateur ne peut enlever que les
+      fichiers qu'il possède
+    \end{itemize}
+  \end{block}
+  \vfill
+  \begin{block}{2/g\(\pm\)s}
+    \begin{itemize}
+    \item quand un programme est lancé, il effectue des accès en ayant
+      le même groupe que l'utilisateur ayant lancé le programme
+    \item \texttt{setgid}: si le fichier est exécutable, lors du
+      lancement, le programme fera des accès en ayant le groupe du
+      fichier (pas du lanceur)
+    \end{itemize}
+  \end{block}
+  \vfill
+  \begin{block}{4/u\(\pm\)s}
+    \begin{itemize}
+    \item quand un programme est lancé, il effectue des accès en étant
+      le même sujet que l'utilisateur ayant lancé le programme
+    \item \texttt{setuid} si le fichier est exécutable, lors du
+      lancement, le programme fera des accès en étant le possesseur du
+      fichier (pas le lanceur)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+\section{Conclusion}
+
+\begin{frame}
+  \frametitle{Au-delà des permissions classiques}
+
+  \vfill
+
+  \begin{itemize}
+  \item utilisation des ACL: plusieurs utilisateurs et groupes par
+    fichier
+  \item capacités: donner certaines permissions de root à des
+    programmes sans set(g,u)id root
+  \item attributs de fichiers (trusted): plus de précisions sur les actions
+    possibles sur un fichier
+  \end{itemize}
+
+  \vfill
+\end{frame}
+
+\end{reveals}
+\end{document}
+ 

@@ -1,0 +1,26 @@
+\message{ !name(expose15-eBPF.tex)}\Titre{Extended Berkeley Packet Filter}
+\usepackage{ifthen}
+
+
+\def\txthl#1{ \ifthenelse{\lengthtest{#1 pt<0.5pt}}{\top}{\bot} }
+
+
+\makeatletter
+\def\sverbatim#1{\expandafter\csname #1\endcsname\@verbatim \frenchspacing\@vobeyspaces \@xverbatim}
+\def\endsverbatim{\endverbatim}
+\makeatother
+
+\begin{document}
+
+\message{ !name(expose15-eBPF.tex) !offset(66) }
+The \emph{ptrace} call allows for the reading and writing at
+      runtime of a process memory (and of the registers)
+    \end{enumerate}
+  \end{block}
+  
+\end{frame}
+
+
+\message{ !name(expose15-eBPF.tex) !offset(839) }
+
+\end{document}

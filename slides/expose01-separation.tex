@@ -1,0 +1,319 @@
+\Titre{Separation}
+
+\begin{document}
+
+\begin{reveals}
+		
+\maketitle
+
+
+
+
+
+\begin{frame}
+  \frametitle{Historical background}
+
+  \begin{block}{Before the  1970s}
+    \begin{itemize}
+    \item Computers only in physically secured environments
+    \item Computers rebooted between each computation
+    \end{itemize}
+  \end{block}
+
+  \pause
+  
+  \begin{block}{Origin of security concerns}
+    \begin{itemize}
+    \item Time-sharing: organisations with different needs use a same
+      computer for economical purposes (Multics, Unix)
+    \item Security goal: Time-sharing should be as secure as non-Time-sharing systems
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \begin{block}{Examples}
+    \begin{itemize}
+    \item University and DoE/DoD use the same super-computer for simulation
+    \item Nowadays: exactly the same concern:
+      \begin{itemize}
+      \item Avionics: RTCA DO-255
+      \item Cloud computing
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Separation}
+
+  \begin{block}{Separation informal statement}
+    The execution of one program cannot influence in any way the
+    execution of another program
+  \end{block}
+
+  \pause
+
+  \begin{block}{Extensive definition}
+    \begin{itemize}[<+->]
+    \item A program in an infinite loop cannot preempt the processor
+    \item A program with a memory leak cannot hold all the available memory
+    \item In TS OS, the processor state has to be cleaned at each
+      process change
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Trusted Computing Base (1/2)}
+
+  \begin{block}{Assume/Guarantee}
+    When adding a new component to a system
+    \begin{itemize}
+    \item Except at the lowest level, use of other components based on assumptions  
+      \begin{itemize}
+      \item OS on the hardware
+      \item Applications/libraries on the OS and other applications/libraries
+      \item $\ldots$
+      \end{itemize}
+    \item The new component guarantees (at some level of certainty) some properties:
+      \begin{itemize}
+      \item no memory leaks,
+      \item bounds on execution time,
+      \item \ldots
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Trusted Computing Base (2/2)}
+
+  \begin{block}{Security in CS}
+    \begin{itemize}
+    \item Formalisms to state and prove the guarantees provided by a
+      component based on some assumptions on other components
+    \item Trusted computing base: parts of a system that are not
+      analysed and just assumed to provide the stated guarantees
+    \item Example: processor state reset:
+      \begin{itemize}
+      \item register reset not in early version of Unix (unused registers were left as is)
+      \item cache never resetted after a context change (leading to
+        lot of security attacks, \textit{e.g.} Spectre)
+      \end{itemize}
+    \item problem compounded in current processors by pipeline,
+      speculative execution, and on-the-fly code optimisation
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Security Solution: Static Configuration}
+  
+  \begin{block}{Principle}
+    Ressources are statically allocated to consumers
+  \end{block}
+
+  \begin{block} {Security implications: Access Control}
+    \begin{itemize}[<+->]
+    \item Access control policy: definition of the possible allocation
+      of resources to consumers
+    \item Must be defined before the start of the machine
+    \item Cannot be changed while it is running
+      \begin{center}
+        \emph{Static AC}
+      \end{center}
+    \item Example: bounds on execution time, memory available, etc.
+    \item Unmutable policy:
+      \begin{center}
+        \emph{Mandatory Access Control}
+      \end{center}
+    \item Allows for a thorough analysis of a system
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Time separation}
+
+  \begin{block}{Statement}
+    The AC policy must specify the computation time allocated to each
+    program
+  \end{block}
+
+  \begin{itemize}
+  \item Hard real-time systems
+  \item Allocates a fraction of the processor cycles to each process
+  \item In practice:
+    \begin{itemize}
+    \item implemented in embedded and mission-critical systems for
+      safety
+      \begin{center}
+        the ABS functionality cannot be affected when you start a new
+        Ariana Grande song
+      \end{center}
+    \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Spatial Separation}
+
+  \begin{block}{Statement}
+    Memory available to each application has to be allocated
+    statically and be disjoint
+  \end{block}
+
+  \begin{itemize}
+  \item \textit{a.k.a.} \emph{partitioning}
+  \item Implies no direct communication between applications (IPC
+    system V), communication through the OS still possible
+  \item In practice
+    \begin{itemize}
+    \item RAM,HDD, SDD are sets of pages, and that set is partitioned,
+      and each application receives one subset
+    \item No malloc/mmap, or a secure variant
+    \item Bounded stack
+    \item No pointers unless the Processor/OS guarantees that pointers
+      never access a wrong page
+    \end{itemize}
+  \item Very hard in practice
+    \begin{itemize}
+    \item Need for a specific language (\textit{e.g.} Lustre) or compiler
+    \item Registers and cache still have to shared on current processors
+    \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Access Control and Spatial Separation}
+
+  \begin{itemize}[<+->]
+  \item TL;DR: very hard, but with some tolerance, achieved by current
+    systems like Linux CGroups
+  \item Incidentally, development driven by Cloud-hosting companies
+  \item Known tolerances:
+    \begin{itemize}
+    \item shared libraries
+    \item bounds on max memory available, but no hard partition
+    \item \texttt{root} still can do whatever he wants
+    \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Partitioning in Information Systems}
+
+  \vfill
+
+  \begin{block}{In a computer network}
+    \begin{itemize}
+    \item Tasks to be performed by a system are allocated to different
+      computers based on their sensitivity
+    \item The network is partitioned into \emph{zones} for computers
+      of similar security concerns
+    \item Access Control on inter-zone exchanges (\textit{a.k.a.}
+      \emph{firewall}) 
+    \item Example:
+      \begin{itemize}
+      \item \textcolor{blue}{DMZ} at the border between a
+        \textcolor{blue}{corporate network} and the
+        \textcolor{blue}{outside} (3 zones), 
+      \item \textcolor{blue}{Firewalls} to control packets between these zones
+      \end{itemize}
+
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Note}
+    \begin{itemize}
+    \item Outside of critical systems, there's no way to prove that
+      all applications are secure
+    \item First glimpse at \emph{Layered Security}/\emph{Defence-in-Depth}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Good AC systems}
+  \framesubtitle{NEAT Security}
+
+  \begin{itemize}[<+->]
+  \item \textcolor{red}{N}on-bypassable: impossible to act outside of
+    the bounds of the AC system
+  \item \textcolor{red}{E}valuatable: possible communications can be
+    assessed before deployment
+  \item \textcolor{red}{A}lways invoked: no future rights, the AC
+    system must always be queried
+  \item \textcolor{red}{T}amperproof: the AC system cannot be changed
+    while the system is running
+  \end{itemize}
+  
+  \pause
+
+  \begin{itemize}
+  \item These concerns are shared with \emph{safe} systems
+  \item Possible on systems dedicated to a task, not in general
+    (\textit{e.g.}, no new file and no new user)
+  \item The CS Security dilemna:
+    \begin{itemize}
+    \item we know how to secure a system
+    \item we know how to have a usable system
+    \item we know how to build a cheap system
+    \end{itemize}
+    but no one has ever (or ever hopes to have) more than 2 out of 3
+  \end{itemize}
+
+\end{frame}
+
+
+
+%\begin{frame}
+%  \frametitle{Disgression cryptographique}
+
+
+%  \begin{itemize}[<+->]
+%  \item Lors du cours de math{\'e}matiques, on a vu des primitives IND-CCA2
+%  \item 
+%    \begin{block}{Rappel:}
+%      On autorise l'attaquant {\`a} conna{\^\i}tre le texte clair d'autant de
+%      chiffr{\'e}s qu'il veut, sauf d'un en particulier. L'attaquant ne
+%      doit pas pouvoir obtenir un seul bit d'information sur le clair
+%      du chiffr{\'e} sp{\'e}cial
+%    \end{block}
+%  \item Pire cas: l'attaquant peut d{\'e}chiffrer tous les autres messages
+%    \begin{center}
+%      \emph{Environnement d'ex{\'e}cution d{\'e}grad{\'e}}
+%    \end{center}
+%  \item Attaque faible: conna{\^\i}tre un seul bit d'information
+%    \begin{center}
+%      Interaction minimale entre l'attaquant et le texte clair
+%    \end{center}
+%  \item Application du principe de s{\'e}paration:
+%    \begin{itemize}
+%    \item Attaquant $=$ une application
+%    \item Texte clair $=$ une application
+%    \item On ne veut pas qu'il y ait d'interaction entre l'attaquant
+%      et le texte clair quelque soit l'environnement d'ex{\'e}cution ( $=$
+%      les autres chiffr{\'e}s)
+%    \end{itemize}
+%  \end{itemize}
+%\end{frame}
+
+
+
+\end{reveals}
+\end{document}

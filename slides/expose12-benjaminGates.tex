@@ -1,0 +1,469 @@
+\Titre{Counter-Measures\&Attacks}
+
+\begin{document}
+
+\begin{reveals}
+		
+\maketitle
+
+
+
+\begin{comment}
+  National  Treasure[70]:
+Historian  and  treasure  hunter  Benjamin  FranklinGates (Cage) races to find the legendary Templar Treasure before a team ofmercenaries.
+%
+–Steganography: %
+The premise of the film is that on the back of the Declaration of
+Independence, signed on July 4, 1776, by 55 Founding Fathers (at least
+nine of whom were Freemasons), hides a coded, unseen map that points
+to the secret location of the fabled and massive Templar Treasure that
+was discovered by the Knights Templar and later protected by the
+Freemasons. This film is a real cybersecurity goldmine, covering a
+large number of cybersecurity notions in addition to steganography, so
+let me provide a detailed description.Please, try to stay with me as
+the plot thickens.
+%
+–Multiple-stage attack, Masquerading attack, Forging, Pseudonym,
+Social engineering, Invisible ink, Hacking, Sensor attack, Biometrics,
+Integrity, Password guessing and Background knowledge:
+%
+In order to protect the Declaration of Independence from the
+mercenaries and read the hidden message, Gates decides to steal the
+Declaration himself. To that end, he carries out a multiple-stage
+attack with the help of his sidekick Riley Poole.
+%
+First, Gates,
+pretending to be a tourist shooting some photos while visiting the
+NationalArchives, takes a picture of an ID badge of one of the
+Archive’s custodians and then creates a fake ID with his own face.
+% stage 0, social engineering before password guessing
+When he visited Chase in her office, introducing himself with the
+pseudonym Paul Brown, Gates noticed that she was missing this button
+from her collection, so he knows that she will open the giftbox he
+sent her and touch the button to put it in her display case.
+% first stage of the password-guessing attack
+He then smears a rare George Washington’s campaign button with
+invisible ink and sends it to Abigail Chase, an archivist at the
+National Archives whom he had tried to warn about the impending
+threat. 
+% second stage of password guessing
+Poole, in the meantime, has hacked into the network of the Archives and
+uses a laser hidden in a camera to attack the sensor of the cage that
+protects the Declaration to raise the temperature over the
+threshold. The archivists therefore remove the Declaration from display
+and take it to the Preservation Room for tests.
+% third stage for password guessing
+Chase goes to the Room too for a check and types the password on a
+keyboard, thus unknowingly smearing the keys with the invisible ink
+that was on the button that Gates sent her.
+% masquerade x 2
+Later that evening, there is a gala at the Archives. Gates masquerades
+as a custodian using the fake ID badge and, once inside, changes
+clothes into a Black Tie, the semi-formal Western dress code for
+evening events, so as to mingle with the other guests.
+% Masquerading\& Biometrics
+He briefly meets Chase and, with an excuse, takes a glass that she has
+been drinking from, from which, using a chemical reagent, he
+reconstructs her fingerprints and puts them on a glove, which he uses
+to open a door controlled by the fingerprint reader 
+% Biometrics trumping, the hard way
+(while the mercenaries, who are also trying to get to thePreservation
+Room, knock a security guard out and drag him to another reader to
+open the door with the guard’s actual finger).
+% Replay attack, inauthentic, also unavailability of the real camera
+Gates needs now to walk through a corridor, so Poole turns off the
+surveillance cameras and replaces the feed with an earlier one, so that
+the security guards watching the monitors see only an empty
+corridor.
+%
+There is one final biometric access control device left for Gates: the
+keyboard that Chase used earlier that day.
+% password guessing: generator or background knowledge
+He shines a blacklight lamp on the keys to see that the ones smeared
+with the invisible ink are: A E F G L O R V Y. Poole uses an automatic
+anagram generator to create a list of possible anagrams, but Gates uses
+backgroundknowledge about Chase, an historian herself, to correctly
+guess that Chase pressed E and L twice and the password is “Valley
+forge”, the location where the American Continental Army made camp
+during the winter of 1777–1778 and which is nowadays often called the
+birthplace of the American Army.
+% Attack target. 
+Gates can now enter the Preservation Room and take the Declaration.
+% Exercice: Reconstruct attack path/tree from this scenario and a few
+% (brutal) alternatives
+
+%
+- Indistinguishability, Swapping and Tracing: 
+%
+With the Declaration of Independence folded and tucked under his arm,
+Gates has to go through the shop, which sells actual-size reproductions
+of the Declaration. 
+% mis-identification
+A cashier, seeing the real Declaration tucked under Gates’ arm, thinks
+that he is trying to steal one of the reproductions, so he is forced
+to pay for it.
+% indistinguishability
+What we the viewers don’t know yet, but will soon find out, is that he
+actually pays both for the real Declaration and for a reproduction, so
+that when the bad guys catch up with him, he swaps the two
+declarations and gives them the replica without them noticing at
+first, and he can getaway.
+% tracing, audit
+“I thought it would be a good idea tohave a duplicate. It
+turned out I was right.” Unfortunately, in the shop he did not have
+enough cash, so he paid with his credit card, which means that the FBI
+can trace the payment and find out that he is not Paul Brown
+but discover his real identity and where he lives.
+%
+–Ottendorf cipher: 
+% Again multiple-stage attack, this time relying on a cipher,
+% and how to break it given its structure. But also counter-measures
+% defeated to access 
+As a consequence, Gates and Poole cannot use the clean-room
+environment that they had set up, so, together with Gates’ father
+and with Chase, who in the meantime has semi-willingly joined them,
+they use more artisanal methods to reveal the message hidden on the
+back of theDeclaration.
+%
+Using lemon juice and their own breaths as heat sources, Gatesand
+Chase expose the message, which is constituted by a series of triples
+of numbers. It is an Ottendorf cipher and the following dialogue takes
+place to provide a useful explanation for the non-expert viewers:
+Poole: Will somebody please explain to me what these magic numbers
+are?%
+Chase:It’s an Ottendorf cipher.%
+Gates’ father: That’s right.%
+Poole:Oh, OK. What’s an Ottendorf cipher?%
+Gates’ father: They’re just codes.%
+Gates: Each of these three numbers corresponds to a word in a key.%
+Chase: Usually a random book or a newspaper article.%
+Gates: In this case, the Silence Dogood letters. So it’s like[Pointing
+to the numbers in a triple, ed]the page number of the key text, the
+line on the page, and the letter in that line.%
+%
+As mentioned earlier in the film, Silence Dogood was the pseudonym
+that 16 year old Benjamin Franklin used to get his letters published
+in the “New-England Courant”, a newspaper founded and published by his
+brother James Franklin. Gates and his allies use the cipher (and some
+additional knowledgethey have on the history of the Liberty Bell and
+on the design of the \$100banknote) to find the hidden message in the
+letters.
+% multiple-stage/security by obscurity
+This proves to be another clue that allows them to find a special pair
+of spectacles invented by BenjaminFranklin, which in turn allows them
+to read another invisible message on the back of the Declaration of
+Independence, which eventually, after some additional hunting, allows
+them to find the location of the treasure.
+%
+Interestingly, the film also contains a reference to the famousMonty
+Hall problem that originates from the game show “Let’s Make a Deal”
+[61]
+\end{comment}
+
+\begin{frame}
+  \frametitle{Historical background}
+
+  \begin{block}{Before the  1970s}
+    \begin{itemize}
+    \item Computers only in physically secured environments
+    \item Computers rebooted between each computation
+    \end{itemize}
+  \end{block}
+
+  \pause
+  
+  \begin{block}{Origin of security concerns}
+    \begin{itemize}
+    \item Time-sharing: organisations with different needs use a same
+      computer for economical purposes (Multics, Unix)
+    \item Security goal: Time-sharing should be as secure as non-Time-sharing systems
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \begin{block}{Examples}
+    \begin{itemize}
+    \item University and DoE/DoD use the same super-computer for simulation
+    \item Nowadays: exactly the same concern:
+      \begin{itemize}
+      \item Avionics: RTCA DO-255
+      \item Cloud computing
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Separation}
+
+  \begin{block}{Separation informal statement}
+    The execution of one program cannot influence in any way the
+    execution of another program
+  \end{block}
+
+  \pause
+
+  \begin{block}{Extensive definition}
+    \begin{itemize}[<+->]
+    \item A program in an infinite loop cannot preempt the processor
+    \item A program with a memory leak cannot hold all the available memory
+    \item In TS OS, the processor state has to be cleaned at each
+      process change
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Trusted Computing Base (1/2)}
+
+  \begin{block}{Assume/Guarantee}
+    When adding a new component to a system
+    \begin{itemize}
+    \item Except at the lowest level, use of other components based on assumptions  
+      \begin{itemize}
+      \item OS on the hardware
+      \item Applications/libraries on the OS and other applications/libraries
+      \item $\ldots$
+      \end{itemize}
+    \item The new component guarantees (at some level of certainty) some properties:
+      \begin{itemize}
+      \item no memory leaks,
+      \item bounds on execution time,
+      \item \ldots
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Trusted Computing Base (2/2)}
+
+  \begin{block}{Security in CS}
+    \begin{itemize}
+    \item Formalisms to state and prove the guarantees provided by a
+      component based on some assumptions on other components
+    \item Trusted computing base: parts of a system that are not
+      analysed and just assumed to provide the stated guarantees
+    \item Example: processor state reset:
+      \begin{itemize}
+      \item register reset not in early version of Unix (unused registers were left as is)
+      \item cache never resetted after a context change (leading to
+        lot of security attacks, \textit{e.g.} Spectre)
+      \end{itemize}
+    \item problem compounded in current processors by pipeline,
+      speculative execution, and on-the-fly code optimisation
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Security Solution: Static Configuration}
+  
+  \begin{block}{Principle}
+    Ressources are statically allocated to consumers
+  \end{block}
+
+  \begin{block} {Security implications: Access Control}
+    \begin{itemize}[<+->]
+    \item Access control policy: definition of the possible allocation
+      of resources to consumers
+    \item Must be defined before the start of the machine
+    \item Cannot be changed while it is running
+      \begin{center}
+        \emph{Static AC}
+      \end{center}
+    \item Example: bounds on execution time, memory available, etc.
+    \item Unmutable policy:
+      \begin{center}
+        \emph{Mandatory Access Control}
+      \end{center}
+    \item Allows for a thorough analysis of a system
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Time separation}
+
+  \begin{block}{Statement}
+    The AC policy must specify the computation time allocated to each
+    program
+  \end{block}
+
+  \begin{itemize}
+  \item Hard real-time systems
+  \item Allocates a fraction of the processor cycles to each process
+  \item In practice:
+    \begin{itemize}
+    \item implemented in embedded and mission-critical systems for
+      safety
+      \begin{center}
+        the ABS functionality cannot be affected when you start a new
+        Ariana Grande song
+      \end{center}
+    \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Spatial Separation}
+
+  \begin{block}{Statement}
+    Memory available to each application has to be allocated
+    statically and be disjoint
+  \end{block}
+
+  \begin{itemize}
+  \item \textit{a.k.a.} \emph{partitioning}
+  \item Implies no direct communication between applications (IPC
+    system V), communication through the OS still possible
+  \item In practice
+    \begin{itemize}
+    \item RAM,HDD, SDD are sets of pages, and that set is partitioned,
+      and each application receives one subset
+    \item No malloc/mmap, or a secure variant
+    \item Bounded stack
+    \item No pointers unless the Processor/OS guarantees that pointers
+      never access a wrong page
+    \end{itemize}
+  \item Very hard in practice
+    \begin{itemize}
+    \item Need for a specific language (\textit{e.g.} Lustre) or compiler
+    \item Registers and cache still have to shared on current processors
+    \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Access Control and Spatial Separation}
+
+  \begin{itemize}[<+->]
+  \item TL;DR: very hard, but with some tolerance, achieved by current
+    systems like Linux CGroups
+  \item Incidentally, development driven by Cloud-hosting companies
+  \item Known tolerances:
+    \begin{itemize}
+    \item shared libraries
+    \item bounds on max memory available, but no hard partition
+    \item \texttt{root} still can do whatever he wants
+    \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Partitioning in Information Systems}
+
+  \vfill
+
+  \begin{block}{In a computer network}
+    \begin{itemize}
+    \item Tasks to be performed by a system are allocated to different
+      computers based on their sensitivity
+    \item The network is partitioned into \emph{zones} for computers
+      of similar security concerns
+    \item Access Control on inter-zone exchanges (\textit{a.k.a.}
+      \emph{firewall}) 
+    \item Example:
+      \begin{itemize}
+      \item \textcolor{blue}{DMZ} at the border between a
+        \textcolor{blue}{corporate network} and the
+        \textcolor{blue}{outside} (3 zones), 
+      \item \textcolor{blue}{Firewalls} to control packets between these zones
+      \end{itemize}
+
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Note}
+    \begin{itemize}
+    \item Outside of critical systems, there's no way to prove that
+      all applications are secure
+    \item First glimpse at \emph{Layered Security}/\emph{Defence-in-Depth}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Good AC systems}
+  \framesubtitle{NEAT Security}
+
+  \begin{itemize}[<+->]
+  \item \textcolor{red}{N}on-bypassable: impossible to act outside of
+    the bounds of the AC system
+  \item \textcolor{red}{E}valuatable: possible communications can be
+    assessed before deployment
+  \item \textcolor{red}{A}lways invoked: no future rights, the AC
+    system must always be queried
+  \item \textcolor{red}{T}amperproof: the AC system cannot be changed
+    while the system is running
+  \end{itemize}
+  
+  \pause
+
+  \begin{itemize}
+  \item These concerns are shared with \emph{safe} systems
+  \item Possible on systems dedicated to a task, not in general
+    (\textit{e.g.}, no new file and no new user)
+  \item The CS Security dilemna:
+    \begin{itemize}
+    \item we know how to secure a system
+    \item we know how to have a usable system
+    \item we know how to build a cheap system
+    \end{itemize}
+    but no one has ever (or ever hopes to have) more than 2 out of 3
+  \end{itemize}
+
+\end{frame}
+
+
+
+%\begin{frame}
+%  \frametitle{Disgression cryptographique}
+
+
+%  \begin{itemize}[<+->]
+%  \item Lors du cours de math{\'e}matiques, on a vu des primitives IND-CCA2
+%  \item 
+%    \begin{block}{Rappel:}
+%      On autorise l'attaquant {\`a} conna{\^\i}tre le texte clair d'autant de
+%      chiffr{\'e}s qu'il veut, sauf d'un en particulier. L'attaquant ne
+%      doit pas pouvoir obtenir un seul bit d'information sur le clair
+%      du chiffr{\'e} sp{\'e}cial
+%    \end{block}
+%  \item Pire cas: l'attaquant peut d{\'e}chiffrer tous les autres messages
+%    \begin{center}
+%      \emph{Environnement d'ex{\'e}cution d{\'e}grad{\'e}}
+%    \end{center}
+%  \item Attaque faible: conna{\^\i}tre un seul bit d'information
+%    \begin{center}
+%      Interaction minimale entre l'attaquant et le texte clair
+%    \end{center}
+%  \item Application du principe de s{\'e}paration:
+%    \begin{itemize}
+%    \item Attaquant $=$ une application
+%    \item Texte clair $=$ une application
+%    \item On ne veut pas qu'il y ait d'interaction entre l'attaquant
+%      et le texte clair quelque soit l'environnement d'ex{\'e}cution ( $=$
+%      les autres chiffr{\'e}s)
+%    \end{itemize}
+%  \end{itemize}
+%\end{frame}
+
+
+
+\end{reveals}
+\end{document}

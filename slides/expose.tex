@@ -1,0 +1,159 @@
+\RequirePackage{ifpdf}
+%HEVEA\pdffalse
+\ifpdf
+\RequirePackage[beamer,utf8]{course}
+\usepackage{etex}
+%\reserveinserts{28}
+\newenvironment{reveals}{}{}
+\newenvironment{rawhtml}{}{}
+\else
+\documentclass{article}
+\fi
+\def\ttt#1{\texttt{#1}}
+\usepackage{array}% pour des tableaux particuliers. N{\'e}cessaire pour les r{\'e}v{\'e}ler colonne par colonne
+
+\newcommand{\p}[2]{\ensuremath{\text{\tt #1}(#2)}}
+\usepackage{listings}
+\usepackage{multirow}
+\def\citeme[#1]{\textcolor{blue}{[#1]}}
+\def\citeother[#1]{\textcolor{red}{[#1]}}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.pathreplacing}
+\def\citeme[#1]{\textcolor{blue}{[#1]}}
+\def\citeother[#1]{\textcolor{red}{[#1]}}
+\usetikzlibrary{shapes}
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes,snakes,shapes.callouts}
+\usetikzlibrary{fit,backgrounds}
+\usetikzlibrary{shadows,matrix}
+\tikzstyle{personne}=[rectangle, draw=blue, thick, fill=white,text=blue, rounded corners, drop shadow, text centered]
+\tikzstyle{bien}=[rectangle, draw=red, thick, fill=white, text=red,rounded corners, drop shadow, text centered]
+\tikzstyle{outil}=[text=red]
+
+\tikzstyle{relation}=[<->, >=open triangle 90, thick,text=bold red]
+\tikzstyle{conclusion}=[dotted, thick]
+\newcommand{\warningsign}{\tikz[baseline=-.75ex] \node[shape=regular polygon, regular polygon sides=3, inner sep=0pt, draw, thick] {\textbf{!}};}
+\usepackage{varwidth}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{multicol}
+
+
+\author{Yannick Chevalier}
+\institute{Universit{\'e} de Toulouse}
+\def\Institute{Universit{\'e} de Toulouse}
+\usetikzlibrary{shapes,snakes,shapes.callouts}
+\date{CSA M1, Security}
+  \makeatletter
+  \let\Title\@title
+  \let\Author\@author
+  \let\Date\@date
+  \makeatother
+
+\newcommand{\tikzmarkC}[1]{\tikz[overlay,remember picture,baseline={-3pt}] \node[] (#1) {};}
+\tikzset{
+  precision/.style={align=center,
+    draw=red, 
+    text=red,
+    fill=white,
+    very thick,
+    cloud callout, 
+    cloud puffs=12, 
+    callout pointer segments=5,
+    cloud callout/.style={fill=none}, 
+    cloud puff arc=120,
+    anchor=pointer,
+  },
+  cloud/.pic={
+    \node[cloud, 
+    cloud puffs=10.8,
+    cloud puff arc=120, 
+    aspect=2, 
+    draw=red, 
+    very thick,
+    text width=-2cm] () at (0,0) {\tikzpictext} ;
+  },
+  concept/.style={
+           ellipse,
+           draw=black, 
+           very thick,
+           inner sep=4pt,
+           text centered,
+           fill=white,
+           very thick,
+    },
+    notation/.style={
+           rectangle,
+           rounded corners,
+           draw=black, 
+           fill=white,
+           very thick,
+           minimum height=3cm,
+           inner sep=2pt,
+           text centered,
+     },
+     overbrace/.style={
+       -,
+       decorate,
+       decoration={brace,amplitude=0.3cm},
+       very thick
+     },
+     underbrace/.style={
+       -,
+       decorate,
+       decoration={brace,amplitude=0.3cm,mirror},
+       very thick
+     },
+}
+
+\newcommand{\important}[1]{\begin{block}{Important}\color{red}\bf #1 \end{block}}
+\tikzstyle{box}=[very thick,rectangle, rounded corners=5pt, inner sep=10pt, inner ysep=5pt,draw opacity=1,text opacity=1,fill opacity=0.2]
+\tikzstyle{honest}=[draw=blue,fill=blue!20!white]
+\tikzstyle{dishonest}=[draw=red,fill=red!20!white]
+\tikzstyle{neutral}=[draw=black,fill=black!20!white]
+\tikzstyle{sqarrow}=[rounded corners=5pt,to path={(\tikztostart) -- ++(#1,0pt)  \tikztonodes  |- (\tikztotarget) },fill opacity=0,text opacity=1]
+\tikzset{sqarrow/.default=-2cm,}
+\tikzstyle{remarque}=[rectangle callout,very thick,draw=black,fill=yellow!50,callout absolute pointer={#1}]
+\tikzstyle{tikzframe}=[draw,draw opacity=1,fill opacity=1,rectangle callout,very thick,color=black,fill=white,callout absolute pointer={#1}]
+\tikzstyle{caption}=[rectangle,color=black,fill=white,below=-10pt of #1.south]
+
+\newcommand{\tikzblock}[4]{%
+\node[rectangle] (#1) at #2
+  {%
+    \begin{minipage}{#3}%
+      #4
+    \end{minipage}%
+  } ;% 
+}
+\mdfdefinestyle{mdbox}{%
+linecolor=black,outerlinewidth=1pt,%
+frametitlerule=false,frametitlefont=\sffamily\bfseries\color{white},%
+%frametitlerulewidth=1pt,frametitlerulecolor=green!40!black,%
+frametitlebackgroundcolor=blue!40!black,
+backgroundcolor=blue!30!white,
+innertopmargin=\topskip,
+roundcorner=5pt
+}
+\newmdenv[style=mdbox]{tikzmdbox}
+\newenvironment{tikzbox}[1]
+  {\begin{tikzmdbox}[frametitle=#1]}
+  {\end{tikzmdbox}}
+
+\newenvironment{bash}{%
+  \lstset{language=bash}%
+  \begin{lstlisting}
+  }{%
+  \end{lstlisting}
+}
+
+\renewcommand{\emph}[1]{\textcolor{red}{#1}}
+
+\def\Titre#1{%
+  \title{#1}%
+  \titre{#1}%
+}
+
+
+\expandafter\input{expose\numero}

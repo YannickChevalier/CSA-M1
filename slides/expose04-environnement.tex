@@ -1,0 +1,454 @@
+\Titre{Menaces \& Vulnérabilités}
+
+
+\setbeamercovered{invisible}
+  
+\usepackage{ifthen}
+
+
+\def\txthl#1{ \ifthenelse{\lengthtest{#1 pt<0.5pt}}{\top}{\bot} }
+
+\begin{document}
+
+\begin{reveals}
+		
+\maketitle
+
+
+\section{Introduction}
+
+\begin{frame}
+  \frametitle{Protéger de qui ?}
+
+  \vfill
+
+  \begin{block}{Ce qu'on a vu}
+    \begin{enumerate}
+    \item décomposition: on définit la sécurité par l'absence
+      d'influence anormales
+    \item niveaux de protection: on définit les influences normales et
+      celles qu'il faut contrôler
+    \item contrôle d'accès/authentification: on définit les personnes
+      aux frontières du SI
+    \end{enumerate}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Aujourd'hui}
+    \begin{itemize}
+    \item définition des menaces, attaques, et autres
+    \item tour d'horizon de ce qui existe en terme d'attaques
+    \item définition des attaquants possibles
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+\begin{frame}
+  \frametitle{Plan}
+
+  \vfill
+  \begin{enumerate}
+  \item Vulnérabilité
+  \item Menace
+  \item Attaque
+  \end{enumerate}
+  \vfill
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Vulnérabilités}
+
+  \vfill
+  
+  \begin{block}{Point de vue abstrait}
+    flux d'information anormal possible et pas traité par une
+    procédure de classification/déclassification (entre les
+    composants) ni par le contrôle d'accès (pour les sujets)
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Point de vue concret}
+    Essentiellement deux cas possibles:
+    \begin{itemize}
+    \pause\item Y'a un bug: l'exploitation d'un bug permet des flux
+    d'information non prévus 
+    \pause\item Y'a un trou dans le mur: tous les cas n'ont pas été
+    recensés, ou certains recensés ont été mal traités
+    \end{itemize}
+  \end{block}
+
+  \vfill
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Menace}
+
+  \vfill
+
+  \begin{block}{Définition}
+    toute chose ou personne dont l'effet est un dommage au système à protéger
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Exemples}
+    \begin{itemize}
+    \item pluie si une partie du site est en zone inondable
+    \item employé mécontent
+    \item concurrent
+    \end{itemize}
+    suite: focus sur les menaces représentées par des humains
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Attaque}
+
+  \vfill
+  \begin{block}{Définition}
+  Une attaque de sécurité est l'exploitation d'une vulnérabilité
+  par un acteur (personne, entreprise, État)
+  \end{block}
+  \vfill
+  \begin{block}{Points à considérer}
+    \begin{itemize}
+    \item concrétisation d'une menace humaine
+    \item buts (gain \textit{vs.} perte) et opportunité (facilité à
+      mener une attaque) à prendre en compte dans la mesure de dangerosité
+    \end{itemize}
+  \end{block}
+
+
+  \vfill
+
+  \begin{center}
+  \alert{Il est important d'identifier les acteurs possibles}
+  \end{center}
+  
+  \vfill
+
+\end{frame}
+
+\section{Vulnérabilités}
+
+\begin{frame}
+  \frametitle{Vulnérabilités logicielles}
+
+  \vfill
+
+  \begin{block}{Cas non traités}
+    \begin{itemize}
+    \item pas d'analyse de sécurité spécifique
+    \item analyse de sécurité partielle
+    \end{itemize}
+  \end{block}
+
+  \pause\vfill
+
+  \begin{block}{Erreurs dans le système de sécurité}
+    \begin{itemize}
+    \item erreur de conception
+    \item erreur d'implémentation
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Analyse de sécurité partielle}
+
+  \vfill
+
+  \begin{block}{Modèle}
+    Système à sécuriser \(=\) graphe:
+    \begin{itemize}
+    \item les n\oe uds sont les composants
+    \item les arcs sont les flux d'information entre composants
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Pour la personne protégeant le SI:}
+    \begin{itemize}
+    \item vue du SI composant par composant
+    \item focus sur les arcs menant aux composants les plus importants
+    \item manque de moyens: oubli des autres
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Pour une personne attaquant le SI}
+    \begin{itemize}
+    \item les attaques directes sont rares !
+    \item en général: compromissions successives de
+    composants du SI
+    \item un attaquant recherche d'un chemin dans le graphe qui l'amène
+    d'un n\oe ud contrôlé vers un n\oe ud but
+    \end{itemize}
+  \end{block}
+
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Erreurs de conception}
+
+  \vfill
+  \begin{block}{Protocoles}
+    \begin{itemize}
+    \item hypothèses non raisonnables (\textit{e.g.}, cryptographie parfaite)
+    \item erreurs logiques dans la spécification du protocole (\textit{cf.} TD)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Contrôle d'accès}
+    \begin{itemize}
+    \item erreurs dans l'écriture de la politique de contrôle d'accès
+      \begin{center}
+        \textcolor{red}{Pour certains systèmes d'entreprises, une politique pouvant être décrite en quelques lignes demande des pages d'écriture de règles}
+      \end{center}
+    \item erreurs dans les règles de filtrage des pare-feux
+    \end{itemize}
+  \end{block}
+
+\vfill
+
+\begin{block}{Morale}
+  \begin{itemize}
+  \item la conception de composants pour la sécurité demande une
+    grande expertise
+  \item toujours préférable de réutiliser des solutions existantes
+  \end{itemize}
+\end{block}
+
+\vfill
+\end{frame}
+
+\begin{frame}
+  \frametitle{Erreurs d'implémentation (1/2)}
+
+  \vfill
+
+  \begin{block}{Erreurs logicielles}
+    \begin{itemize}
+    \item heartbleed: attaque sur une implémentation de TLS
+    \item buffer overflow
+    \item \(\ldots\)
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Contre-mesures}
+    \begin{itemize}
+    \item utilisation de flags lors de la compilation (pour gcc,
+      \texttt{-fstack-protector-strong} alerte en cas de buffer
+      overflow)
+    \item relecture de code, documentation, ingénierie logicielle
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Erreurs d'implémentation (2/2)}
+
+  \vfill
+
+  \begin{block}{Erreurs spécifiques à la sécurité}
+    \begin{itemize}
+    \item mise à zéro d'un tableau enlevée lors de l'optimisation
+    \item différences de temps d'exécution dans différents cas qui
+      permettent de remonter aux valeurs dans un programme
+    \item \(\Rightarrow\) certaines failles ne sont pas capturables
+      par le développement logiciel classique
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Contre-mesures}
+    Utilisation de code développé par des experts (par exemple, libsodium)
+  \end{block}
+
+\end{frame}
+
+
+\section{Menaces}
+
+\begin{frame}
+  \frametitle{Importance}
+
+  \vfill
+
+  \begin{block}{De la vulnérabilité à l'attaque}
+    opportunité d'exploitation d'une vulnérabilité dépend:
+    \begin{itemize}
+    \item des possibilités d'accès des acteurs possibles
+    \item gain possible de cette exploitation pour chaque acteur
+      identifié
+    \item mitigé par le coût anticipé de cette exploitation pour
+      chaque acteur identifié
+    \end{itemize}
+  \end{block}
+  \vfill
+
+  \begin{block}{Identification d'une menace}
+    \begin{itemize}
+    \item qui: quelle puissance de calcul ? quel accès de base donné
+      par le système de contrôle d'accès ?
+    \item pourquoi: balance des risques: gains \textit{vs} perte
+    \item but: au sein du SI ou au-delà ?
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Qui ?}
+
+\vfill
+\begin{center}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    & puissance & accès & risques \\\hline
+    état & +++ & +++ & + \\\hline
+    concurrent & ++ & + & ++ \\\hline
+    employé & + & +++ & +++ \\\hline
+    cyber-crime& + à ++& + à ++ & +\\\hline
+  \end{tabular}
+\end{center}
+
+\vfill
+\begin{block}{Remarques:}
+  \begin{itemize}
+  \item peu de rétorsions possible contre un état étranger, l'accès
+    direct est en général faible
+  \item un concurrent peu avoir (par des relations communes) accès à
+    certaines données, rétorsions contre un concurrent étranger faibles
+  \item un employé part avec beaucoup plus de données, mais n'a pas
+    beaucoup de moyens
+  \end{itemize}
+\end{block}
+\vfill
+\end{frame}
+
+\begin{frame}
+  \frametitle{Sécuriser en augmentant les risques/la difficulté}
+
+  \vfill
+
+  \begin{block}{Raisonnement}
+    Si la menace est motivée par un rapport bénéfice/coût, on peut 
+    augmenter le coût pour réduire l'opportunité de mener l'attaque
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Exemples}
+    \begin{itemize}
+    \item logs, surveillance vidéo: preuve d'implication d'une personne
+    \item cryptographie: obligation de mise en \oe uvre de moyens chers
+    \item fouille, sas, carte d'identité: contournements chers
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Mais...}
+    \begin{itemize}
+    \item la mise en place de solutions de sécurité coûte cher
+    \item \textcolor{red}{audit:} valider le coût d'une solution par rapport à la perte causée par une attaque
+    \item exemple: pendant longtemps, attaque connue (et utilisée)
+      mais non corrigée sur les cartes bleues car la solution aurait
+      coûter plus cher que la fraude
+    \end{itemize}
+  \end{block}
+  \vfill
+\end{frame}
+\begin{frame}
+  \frametitle{Dans quel but ?}
+
+  \vfill
+
+  \begin{block}{Dans le cadre du recensement des composants}
+    \begin{itemize}
+    \item ressources interne à protéger (cartes d'accès, données de
+      l'entreprise)
+    \item ressources permettant d'accéder à des ressources externes
+      (vol de cartes d'identités vierges chez un imprimeur)
+    \item cloud: le rôle de l'hébergeur est aussi de sécuriser les
+      données de ses clients
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Évaluation des moyens pouvant être mis en \oe uvre}
+    \begin{itemize}
+    \item coût \(<\) bénéfices potentiels
+    \item évaluation par rapport aux accès possibles, pas par rapport
+      au statut (la RDA visait principalement les secrétaires pour
+      obtenir des informations, pas les haut-fonctionnaires)
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Fraude interne}
+
+  \vfill
+
+  \begin{block}{Catégories de fraudeur}
+    occasionnel, récurrent (de petites sommes à chaque fois), professionnel (se fait embaucher pour commettre une fraude), organisé (en groupe)
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Vulnérabilités}
+    faibles procédures de contrôle interne et de surveillance des opérations, contrôle d'accès trop permissif, absence de séparation de tâche
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Fraudes recensées}
+    détournement des avoirs de la clientèle ou de l'entreprise,
+    création de fausses opérations, falsification des objectifs pour
+    un gain de rémunération
+  \end{block}
+
+\end{frame}
+
+\section{Attaques}
+
+\begin{frame}
+
+  \vfill
+
+  \Large cf. TD
+  
+  \vfill
+\end{frame}
+
+
+\end{reveals}
+\end{document}
+
+
